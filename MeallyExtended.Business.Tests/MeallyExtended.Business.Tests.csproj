@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MeallyExtended.Business\MeallyExtended.Business.csproj" />
+  </ItemGroup>
+
 </Project>
