@@ -1,5 +1,7 @@
-﻿namespace MeallyExtended.DataModels.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace MeallyExtended.DataModels.Entities;
+
+public class User : IdentityUser
 {
 }
