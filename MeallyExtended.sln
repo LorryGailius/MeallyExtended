@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModels", "DataModels", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{9578D576-2B88-48E3-B3A7-B2CF153506F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.DataModels", "MeallyExtended.DataModels\MeallyExtended.DataModels.csproj", "{AE77D69E-228F-4758-8DAD-78E530BE1196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.DataModels", "MeallyExtended.DataModels\MeallyExtended.DataModels.csproj", "{AE77D69E-228F-4758-8DAD-78E530BE1196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.Contracts", "MeallyExtended.Contracts\MeallyExtended.Contracts.csproj", "{BBE7E8E7-C614-4553-8E50-396C50C296DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.Contracts", "MeallyExtended.Contracts\MeallyExtended.Contracts.csproj", "{BBE7E8E7-C614-4553-8E50-396C50C296DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.Business", "MeallyExtended.Business\MeallyExtended.Business.csproj", "{FD13D32D-57F9-4D89-9ABC-9D1A37753B47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.Business", "MeallyExtended.Business\MeallyExtended.Business.csproj", "{FD13D32D-57F9-4D89-9ABC-9D1A37753B47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.API", "MeallyExtended.API\MeallyExtended.API.csproj", "{4F231DF8-0301-47B5-A4DA-DA22077A144B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.API", "MeallyExtended.API\MeallyExtended.API.csproj", "{4F231DF8-0301-47B5-A4DA-DA22077A144B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
