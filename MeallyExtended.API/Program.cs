@@ -1,5 +1,9 @@
 
 using MeallyExtended.Business.Data;
+using MeallyExtended.Business.Interfaces;
+using MeallyExtended.Business.Repository.Interfaces;
+using MeallyExtended.Business.Repository;
+using MeallyExtended.Business.Services;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +32,8 @@ namespace MeallyExtended.API
 
             builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<MeallyDbContext>().AddApiEndpoints();
 
+            builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+            builder.Services.AddScoped<IRecipeService, RecipeService>();
 
             var app = builder.Build();
 
