@@ -8,10 +8,19 @@ namespace MeallyExtended.API.Controllers
     public class RecipeController : ControllerBase
     {
 
-       //[HttpPost(Name = "CreateRecipe")]
-       // public IActionResult Get()
-       // {
+        [HttpPost(Name = "CreateRecipe")]
+        public async Task<IActionResult> CreateRecipe()
+        {
+            return BadRequest();
             
-       // }
+        }
+
+        [HttpGet("{recipeId}")]
+        public async Task<IActionResult> GetRecipe(Guid recipeId)
+        {
+            
+            return BadRequest();
+
+        }
     }
 }
