@@ -9,11 +9,11 @@ namespace MeallyExtended.Business.Repository.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task<IEnumerable<Category>> GetCategories();
-        Task<IEnumerable<Category>> GetCategoriesByRecipeId(Guid recipeId);
-        Task<Category> GetCategoryById(Guid categoryId);
-        Task<Category> AddCategory(Category category);
-        Task<Category> UpdateCategory(Category category);
-        Task<bool> DeleteCategory(Guid categoryId);
+        public Task<IEnumerable<Category>> GetCategories();
+        public Task<IEnumerable<Category>> GetCategoriesByRecipeId(Guid recipeId);
+        public Task<Category> GetCategoryById(Guid categoryId);
+        public Task<Category> AddCategory(Category category);
+        public Task<Category> UpdateCategory(Category category);
+        public Task<bool> DeleteCategory(Guid categoryId);
     }
 }

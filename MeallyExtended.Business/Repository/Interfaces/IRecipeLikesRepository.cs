@@ -9,10 +9,10 @@ namespace MeallyExtended.Business.Repository.Interfaces
 {
     public interface IRecipeLikesRepository
     {
-        Task<RecipeLikes> GetRecipeLikesByRecipeId(Guid recipeId);
-        Task<RecipeLikes> GetRecipeLikesById(Guid recipeLikesId);
-        Task<RecipeLikes> AddRecipeLikes(RecipeLikes recipeLikes);
-        Task<RecipeLikes> UpdateRecipeLikes(RecipeLikes recipeLikes);
-        Task<bool> DeleteRecipeLikes(Guid recipeLikesId);
+        public Task<RecipeLikes> GetRecipeLikesByRecipeId(Guid recipeId);
+        public Task<RecipeLikes> GetRecipeLikesById(Guid recipeLikesId);
+        public Task<RecipeLikes> AddRecipeLikes(RecipeLikes recipeLikes);
+        public Task<RecipeLikes> UpdateRecipeLikes(RecipeLikes recipeLikes);
+        public Task<bool> DeleteRecipeLikes(Guid recipeLikesId);
     }
 }

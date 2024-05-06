@@ -9,11 +9,11 @@ namespace MeallyExtended.Business.Repository.Interfaces
 {
     public interface IReviewRepository
     {
-        Task<IEnumerable<Review>> GetReviewsByRecipeId(Guid recipeId);
-        Task<IEnumerable<Review>> GetReviewsByUserId(string userId);
-        Task<Review> GetReviewById(Guid reviewId);
-        Task<Review> AddReview(Review review);
-        Task<Review> UpdateReview(Review review);
-        Task<bool> DeleteReview(Guid reviewId);
+        public Task<IEnumerable<Review>> GetReviewsByRecipeId(Guid recipeId);
+        public Task<IEnumerable<Review>> GetReviewsByUserId(string userId);
+        public Task<Review> GetReviewById(Guid reviewId);
+        public Task<Review> AddReview(Review review);
+        public Task<Review> UpdateReview(Review review);
+        public Task<bool> DeleteReview(Guid reviewId);
     }
 }
