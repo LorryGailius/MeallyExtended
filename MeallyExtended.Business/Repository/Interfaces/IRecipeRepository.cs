@@ -23,6 +23,5 @@ namespace MeallyExtended.Business.Repository.Interfaces
         public bool DeleteRecipe(Recipe recipe);
 
         public bool DeleteRecipe(Guid recipeId);
-
     }
 }
