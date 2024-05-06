@@ -69,8 +69,8 @@ namespace MeallyExtended.Business.Repository
             }
 
             _dbContext.Category.Remove(category);
-            await _dbContext.SaveChangesAsync();
-            return true;
+            return await _dbContext.SaveChangesAsync() != 0;
+
         }
     }
 }

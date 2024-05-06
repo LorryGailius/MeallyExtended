@@ -62,15 +62,9 @@ namespace MeallyExtended.Business.Repository
                 return null;
             }
 
-            var existingReview = await _dbContext.Review.FindAsync(review.Id);
-            if (existingReview == null)
-            {
-                return null;
-            }
-
-            _dbContext.Entry(existingReview).CurrentValues.SetValues(review);
+            Review updatedReview = _dbContext.Review.Update(review).Entity;
             await _dbContext.SaveChangesAsync();
-            return existingReview;
+            return updatedReview;
         }
 
         public async Task<bool> DeleteReview(Guid reviewId)
@@ -82,8 +76,7 @@ namespace MeallyExtended.Business.Repository
             }
 
             _dbContext.Review.Remove(review);
-            await _dbContext.SaveChangesAsync();
-            return true;
+            return await _dbContext.SaveChangesAsync() != 0;
         }
     }
 }
