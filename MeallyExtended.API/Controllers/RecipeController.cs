@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MeallyExtended.Contracts.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeallyExtended.API.Controllers
@@ -9,7 +10,7 @@ namespace MeallyExtended.API.Controllers
     {
 
         [HttpPost(Name = "CreateRecipe")]
-        public async Task<IActionResult> CreateRecipe()
+        public async Task<IActionResult> CreateRecipe([FromBody] RecipeDto recipeDto)
         {
             return BadRequest();
             
