@@ -33,28 +33,40 @@ namespace MeallyExtended.Business.Repository
                 .ToListAsync();
         }
 
-        public async Task<Review> GetReviewById(Guid reviewId)
+        public async Task<Review?> GetReviewById(Guid reviewId)
         {
             var review = await _dbContext.Review.FindAsync(reviewId);
-            if (review == null) throw new KeyNotFoundException("Review not found.");
+            if (review == null)
+            {
+                return null;
+            }
             return review;
         }
 
-        public async Task<Review> AddReview(Review review)
+        public async Task<Review?> AddReview(Review review)
         {
-            if (review == null) throw new ArgumentNullException(nameof(review));
+            if (review == null)
+            {
+                return null;
+            }
 
             var addedReview = _dbContext.Review.Add(review).Entity;
             await _dbContext.SaveChangesAsync();
             return addedReview;
         }
 
-        public async Task<Review> UpdateReview(Review review)
+        public async Task<Review?> UpdateReview(Review review)
         {
-            if (review == null) throw new ArgumentNullException(nameof(review));
+            if (review == null)
+            {
+                return null;
+            }
 
             var existingReview = await _dbContext.Review.FindAsync(review.Id);
-            if (existingReview == null) throw new KeyNotFoundException("Review to update not found.");
+            if (existingReview == null)
+            {
+                return null;
+            }
 
             _dbContext.Entry(existingReview).CurrentValues.SetValues(review);
             await _dbContext.SaveChangesAsync();
@@ -64,7 +76,10 @@ namespace MeallyExtended.Business.Repository
         public async Task<bool> DeleteReview(Guid reviewId)
         {
             var review = await _dbContext.Review.FindAsync(reviewId);
-            if (review == null) throw new KeyNotFoundException("Review to delete not found.");
+            if (review == null)
+            {
+                return false;
+            }
 
             _dbContext.Review.Remove(review);
             await _dbContext.SaveChangesAsync();
