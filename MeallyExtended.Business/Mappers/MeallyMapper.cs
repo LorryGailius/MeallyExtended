@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MeallyExtended.Contracts.Dto;
+using MeallyExtended.Contracts.Requests.Recipe;
 using MeallyExtended.DataModels.Entities;
 
 namespace MeallyExtended.Business.Mappers
@@ -13,7 +14,9 @@ namespace MeallyExtended.Business.Mappers
         ReviewDto MapReviewToDto(Review review);
         Review MapReviewToEntity(ReviewDto reviewDto);
         RecipeDto MapRecipeToDto(Recipe recipe);
-        Recipe MapRecipeToEntity(RecipeDto recipeDto);
+        Recipe MapRecipeDtoToEntity(RecipeDto recipeDto);
+        RecipeDto MapCreateRecipeRequestToDto(CreateRecipeRequest request);
+        RecipeDto MapUpdateRecipeRequestToDto(UpdateRecipeRequest request);
     }
 
     public class MeallyMapper : IMeallyMapper
@@ -49,6 +52,8 @@ namespace MeallyExtended.Business.Mappers
                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.Ingredients))
                 .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews));
 
+                cfg.CreateMap<CreateRecipeRequest, RecipeDto>();
+                cfg.CreateMap<UpdateRecipeRequest, RecipeDto>();
             });
 
             _mapper = configuration.CreateMapper();
@@ -89,10 +94,19 @@ namespace MeallyExtended.Business.Mappers
             return _mapper.Map<RecipeDto>(recipe);
         }
 
-        public Recipe MapRecipeToEntity(RecipeDto recipeDto)
+        public Recipe MapRecipeDtoToEntity(RecipeDto recipeDto)
         {
             return _mapper.Map<Recipe>(recipeDto);
         }
-    }
 
+        public RecipeDto MapCreateRecipeRequestToDto(CreateRecipeRequest request)
+        {
+            return _mapper.Map<RecipeDto>(request);
+        }
+
+        public RecipeDto MapUpdateRecipeRequestToDto(UpdateRecipeRequest request)
+        {
+            return _mapper.Map<RecipeDto>(request);
+        }
+    }
 }
