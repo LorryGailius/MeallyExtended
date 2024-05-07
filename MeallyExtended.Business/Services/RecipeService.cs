@@ -1,13 +1,30 @@
 ﻿using MeallyExtended.Business.Interfaces;
+using MeallyExtended.Business.Mappers;
+using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.Contracts.Dto;
+using MeallyExtended.DataModels.Entities;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MeallyExtended.Business.Services
 {
     public class RecipeService : IRecipeService
     {
-        public bool AddRecipe(RecipeDto recipe)
+        private readonly IRecipeRepository _recipeRepository;
+        private readonly IMeallyMapper _mapper;
+
+        public RecipeService(IRecipeRepository recipeRepository, IMeallyMapper mapper)
         {
-            throw new NotImplementedException();
+            _recipeRepository = recipeRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<Recipe> AddRecipe(RecipeDto recipe)
+        {
+            var recipeEntity = _mapper.MapRecipeDtoToEntity(recipe);
+
+            await _recipeRepository.AddRecipe(recipeEntity);
+
+            return recipeEntity;
         }
 
         public bool DeleteRecipe(Guid recipeId)

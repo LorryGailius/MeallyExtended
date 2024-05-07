@@ -1,4 +1,6 @@
-﻿using MeallyExtended.Contracts.Dto;
+﻿using MeallyExtended.Business.Interfaces;
+using MeallyExtended.Business.Mappers;
+using MeallyExtended.Contracts.Requests.Recipe;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeallyExtended.API.Controllers
@@ -7,12 +9,22 @@ namespace MeallyExtended.API.Controllers
     [Route("api/[controller]")]
     public class RecipeController : ControllerBase
     {
+        private readonly IRecipeService _recipeService;
+        private readonly IMeallyMapper _mapper;
 
-        [HttpPost(Name = "CreateRecipe")]
-        public async Task<IActionResult> CreateRecipe([FromBody] RecipeDto recipeDto)
+        public RecipeController(IRecipeService recipeService, IMeallyMapper mapper)
         {
-            return BadRequest();
-            
+            _recipeService = recipeService;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest request)
+        {
+            var recipe = _mapper.MapCreateRecipeRequestToDto(request);
+            var result = _recipeService.AddRecipe(recipe);
+
+            return CreatedAtAction("GetRecipe", new { recipeId = result.Id }, result);
         }
 
         [HttpGet("{recipeId}:guid")]

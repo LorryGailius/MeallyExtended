@@ -1,4 +1,5 @@
 ﻿using MeallyExtended.Contracts.Dto;
+using MeallyExtended.DataModels.Entities;
 
 namespace MeallyExtended.Business.Interfaces
 {
@@ -6,7 +7,7 @@ namespace MeallyExtended.Business.Interfaces
     {
         public RecipeDto GetRecipeById(Guid recipeId);
 
-        public bool AddRecipe(RecipeDto recipe);
+        public Task<Recipe> AddRecipe(RecipeDto recipe);
 
         public bool UpdateRecipe(RecipeDto recipe);
 
