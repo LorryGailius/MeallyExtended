@@ -1,112 +1,158 @@
-﻿using AutoMapper;
-using MeallyExtended.Contracts.Dto;
-using MeallyExtended.Contracts.Requests.Recipe;
+﻿using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
+using MeallyExtended.Contracts.Requests;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MeallyExtended.Contracts.Requests.Recipe;
+using MeallyExtended.Contracts.Requests.Review;
+using MeallyExtended.Contracts.Requests.Category;
 
 namespace MeallyExtended.Business.Mappers
 {
-    public interface IMeallyMapper
+    public static class MeallyMapper
     {
-        CategoryDto MapCategoryToDto(Category category);
-        Category MapCategoryToEntity(CategoryDto categoryDto);
-        Ingredient MapIngredientToEntity(IngredientDto ingredientDto);
-        IngredientDto MapIngredientToDto(Ingredient ingredient);
-        ReviewDto MapReviewToDto(Review review);
-        Review MapReviewToEntity(ReviewDto reviewDto);
-        RecipeDto MapRecipeToDto(Recipe recipe);
-        Recipe MapRecipeDtoToEntity(RecipeDto recipeDto);
-        RecipeDto MapCreateRecipeRequestToDto(CreateRecipeRequest request);
-        RecipeDto MapUpdateRecipeRequestToDto(UpdateRecipeRequest request);
-    }
+        #region Category
 
-    public class MeallyMapper : IMeallyMapper
-    {
-        private readonly IMapper _mapper;
-
-        public MeallyMapper()
+        public static CategoryDto CategoryToDto(Category category)
         {
-            var configuration = new MapperConfiguration(cfg =>
+            return new CategoryDto
             {
-                cfg.CreateMap<Category, CategoryDto>();
-                cfg.CreateMap<CategoryDto, Category>();
-                cfg.CreateMap<Ingredient, IngredientDto>();
-                cfg.CreateMap<IngredientDto, Ingredient>();
-
-                cfg.CreateMap<Review, ReviewDto>()
-               .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.User.Email));
-                cfg.CreateMap<ReviewDto, Review>()
-               .ForMember(dest => dest.User.Email, opt => opt.MapFrom(src => src.UserEmail));
-
-
-                cfg.CreateMap<Recipe, RecipeDto>()
-                 .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories.Select(c => c.Name)))
-                 .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.User.Email))
-                 .ForMember(dest => dest.LikesCount, opt => opt.MapFrom(src => src.RecipeLikes.LikeCount))
-                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.Ingredients))
-                 .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews));
-
-                cfg.CreateMap<RecipeDto, Recipe>()
-                .ForMember(dest => dest.Categories, opt => opt.Ignore())  // Assuming Category cannot be simply reconstructed
-                .ForMember(dest => dest.User, opt => opt.Ignore())        // Assuming User cannot be simply reconstructed
-                .ForMember(dest => dest.RecipeLikes, opt => opt.Ignore()) // Assuming RecipeLikes cannot be reconstructed directly
-                .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.Ingredients))
-                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews));
-
-                cfg.CreateMap<CreateRecipeRequest, RecipeDto>();
-                cfg.CreateMap<UpdateRecipeRequest, RecipeDto>();
-            });
-
-            _mapper = configuration.CreateMapper();
+                Name = category.Name
+            };
         }
 
-        public CategoryDto MapCategoryToDto(Category category)
+        public static Category CategoryDtoToCategory(CategoryDto categoryDto)
         {
-            return _mapper.Map<CategoryDto>(category);
+            return new Category
+            {
+                Name = categoryDto.Name
+            };
         }
 
-        public Category MapCategoryToEntity(CategoryDto categoryDto)
+        public static CategoryDto CreateCategoryRequestToCategoryDto(CreateCategoryRequest createCategoryRequest)
         {
-            return _mapper.Map<Category>(categoryDto);
+            return new CategoryDto
+            {
+                Name = createCategoryRequest.Name
+            };
         }
 
-        public Ingredient MapIngredientToEntity(IngredientDto ingredientDto)
+        public static CategoryDto UpdateCategoryRequestToCategoryDto(UpdateCategoryRequest updateCategoryRequest)
         {
-            return _mapper.Map<Ingredient>(ingredientDto);
+            return new CategoryDto
+            {
+                Name = updateCategoryRequest.Name
+            };
+        }
+        #endregion Category
+
+        #region Review
+
+        public static ReviewDto ReviewToDto(Review review)
+        {
+            return new ReviewDto
+            {
+                Id = review.Id,
+                UserEmail = review.User.Email,
+                Text = review.Text,
+                CreatedDate = review.CreatedDate
+            };
         }
 
-        public IngredientDto MapIngredientToDto(Ingredient ingredient)
+        public static Review ReviewDtoToReview(ReviewDto reviewDto)
         {
-            return _mapper.Map<IngredientDto>(ingredient);
+            return new Review
+            {
+                Id = reviewDto.Id,
+                Text = reviewDto.Text,
+                CreatedDate = reviewDto.CreatedDate
+            };
         }
 
-        public ReviewDto MapReviewToDto(Review review)
+        public static ReviewDto CreateReviewRequestToReviewDto(CreateReviewRequest createReviewRequest)
         {
-            return _mapper.Map<ReviewDto>(review);
+            return new ReviewDto
+            {
+                RecipeId = createReviewRequest.RecipeId,
+                UserEmail = createReviewRequest.UserEmail,
+                Text = createReviewRequest.Text,
+                CreatedDate = createReviewRequest.CreatedDate
+            };
         }
 
-        public Review MapReviewToEntity(ReviewDto reviewDto)
+        public static ReviewDto UpdateReviewRequestToReviewDto(UpdateReviewRequest updateReviewRequest)
         {
-            return _mapper.Map<Review>(reviewDto);
+            return new ReviewDto
+            {
+                RecipeId = updateReviewRequest.RecipeId,
+                UserEmail = updateReviewRequest.UserEmail,
+                Text = updateReviewRequest.Text,
+                CreatedDate = updateReviewRequest.CreatedDate
+            };
+        }
+        #endregion Review
+
+        #region Recipe
+        public static RecipeDto RecipeToDto(Recipe recipe)
+        {
+            return new RecipeDto
+            {
+                Id = recipe.Id,
+                Title = recipe.Title,
+                Description = recipe.Description,
+                Ingredients = recipe.Ingredients.ToList(),
+                Instructions = recipe.Instructions,
+                LikesCount = recipe.RecipeLikes.LikeCount,
+                Duration = recipe.Duration,
+                Categories = recipe.Categories.Select(c => CategoryToDto(c)).ToList(),
+                Reviews = recipe.Reviews.Select(r => ReviewToDto(r)).ToList(),
+            };
         }
 
-        public RecipeDto MapRecipeToDto(Recipe recipe)
+        public static Recipe RecipeDtoToRecipe(RecipeDto recipeDto)
         {
-            return _mapper.Map<RecipeDto>(recipe);
+            return new Recipe
+            {
+                Id = recipeDto.Id,
+                Title = recipeDto.Title,
+                Description = recipeDto.Description,
+                Ingredients = recipeDto.Ingredients.ToArray(),
+                Instructions = recipeDto.Instructions,
+                Duration = recipeDto.Duration,
+                Categories = recipeDto.Categories.Select(c => new Category {Name = c.Name }).ToList(),
+                Reviews = recipeDto.Reviews.Select(r => new Review { Id = r.Id, Text = r.Text, CreatedDate = r.CreatedDate }).ToList()
+            };
         }
 
-        public Recipe MapRecipeDtoToEntity(RecipeDto recipeDto)
+        public static RecipeDto CreateRecipeRequestToRecipeDto(CreateRecipeRequest createRecipeRequest)
         {
-            return _mapper.Map<Recipe>(recipeDto);
+            return new RecipeDto
+            {
+                Title = createRecipeRequest.Title,
+                Description = createRecipeRequest.Description,
+                Ingredients = createRecipeRequest.Ingredients,
+                Instructions = createRecipeRequest.Instructions,
+                Duration = createRecipeRequest.Duration,
+                Categories = createRecipeRequest.Categories.Select(c => new CategoryDto { Name = c }).ToList()
+            };
         }
 
-        public RecipeDto MapCreateRecipeRequestToDto(CreateRecipeRequest request)
+        public static RecipeDto UpdateRecipeRequestToRecipeDto(UpdateRecipeRequest updateRecipeRequest)
         {
-            return _mapper.Map<RecipeDto>(request);
+            return new RecipeDto
+            {
+                Id = updateRecipeRequest.Id,
+                Title = updateRecipeRequest.Title,
+                Description = updateRecipeRequest.Description,
+                Ingredients = updateRecipeRequest.Ingredients,
+                Instructions = updateRecipeRequest.Instructions,
+                Duration = updateRecipeRequest.Duration,
+                Categories = updateRecipeRequest.Categories.Select(c => new CategoryDto { Name = c }).ToList()
+            };
         }
-
-        public RecipeDto MapUpdateRecipeRequestToDto(UpdateRecipeRequest request)
-        {
-            return _mapper.Map<RecipeDto>(request);
-        }
+        #endregion Recipe
     }
 }
