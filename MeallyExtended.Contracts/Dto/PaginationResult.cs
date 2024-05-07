@@ -1,6 +1,6 @@
 ﻿namespace MeallyExtended.Contracts.Dto
 {
-    internal class PaginationResult<T>
+    public class PaginationResult<T>
     {
         public int PageNo { get; set; }
         public int PageSize { get; set; }

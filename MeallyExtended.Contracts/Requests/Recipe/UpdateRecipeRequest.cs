@@ -1,6 +1,6 @@
 ﻿namespace MeallyExtended.Contracts.Requests.Recipe
 {
-    internal class UpdateRecipeRequest
+    public class UpdateRecipeRequest
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = null!;

@@ -1,6 +1,6 @@
 ﻿namespace MeallyExtended.Contracts.Requests.Review
 {
-    internal class UpdateReviewRequest
+    public class UpdateReviewRequest
     {
         public Guid Id { get; set; }
         public string UserEmail { get; set; } = null!;
