@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MeallyExtended.DataModels.Entities;
 

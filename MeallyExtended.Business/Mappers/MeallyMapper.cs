@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
 using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MeallyExtended.Business.Mappers
 {

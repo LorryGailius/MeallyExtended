@@ -1,7 +1,6 @@
 ﻿using MeallyExtended.DataModels.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace MeallyExtended.Business.Data
 {

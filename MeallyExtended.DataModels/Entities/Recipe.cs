@@ -1,7 +1,6 @@
 ﻿using MeallyExtended.Contracts.Dto;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace MeallyExtended.DataModels.Entities;
 

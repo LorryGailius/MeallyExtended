@@ -1,5 +1,4 @@
 ﻿using MeallyExtended.Contracts.Dto;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeallyExtended.API.Controllers

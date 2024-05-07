@@ -1,10 +1,4 @@
-﻿using MeallyExtended.Business.Data;
-using MeallyExtended.DataModels.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MeallyExtended.DataModels.Entities;
 
 namespace MeallyExtended.Business.Repository.Interfaces
 {
