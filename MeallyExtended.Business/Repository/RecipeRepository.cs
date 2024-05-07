@@ -28,7 +28,7 @@ namespace MeallyExtended.Business.Repository
                 return null;
             }
 
-            Recipe savedRecipe = _dbContext.Recipe.Add(recipe).Entity;
+            var savedRecipe = _dbContext.Recipe.Add(recipe).Entity;
             await _dbContext.SaveChangesAsync();
             return savedRecipe;
         }
@@ -46,19 +46,31 @@ namespace MeallyExtended.Business.Repository
             return await _dbContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<IEnumerable<Recipe>> GetAllRecipesByCategoryList(List<Category> categories)
+        public async Task<IEnumerable<string>> GetSearchSuggestions(string query, int amount)
         {
-            return await _dbContext.Recipe.Include(x => x.Categories).Where(x => x.Categories.Any(y => categories.Contains(y))).ToListAsync();
+            return await _dbContext.Recipe.Where(x => x.Title.Contains(query)).Select(x => x.Title).Take(amount)
+                .ToListAsync();
+        }
+
+        public IQueryable<Recipe> GetRecipeByQuery(string query, List<Category> categories)
+        {
+            return _dbContext.Recipe.Include(x => x.Categories)
+                .Where(x => x.Categories.Any(categories.Contains) && x.Title.Contains(query));
+        }
+
+        public IQueryable<Recipe> GetRecipesByCategory(List<Category> categories)
+        {
+            return _dbContext.Recipe.Include(x => x.Categories).Where(x => x.Categories.Any(y => categories.Contains(y)));
+        }
+
+        public IQueryable<Recipe> GetRecipeByTitle(string title)
+        {
+            return _dbContext.Recipe.Where(x => x.Title.Contains(title));
         }
 
         public async Task<Recipe?> GetRecipeById(Guid recipeId)
         {
-            return await _dbContext.Recipe.FirstOrDefaultAsync(x => x.Id == recipeId); 
-        }
-
-        public async Task<Recipe?> GetRecipeByTitle(string title)
-        {
-            return await _dbContext.Recipe.FirstOrDefaultAsync(x => x.Title.Contains(title, StringComparison.CurrentCultureIgnoreCase));
+            return await _dbContext.Recipe.FirstOrDefaultAsync(x => x.Id == recipeId);
         }
 
         public async Task<Recipe?> UpdateRecipe(Recipe recipe)
@@ -69,7 +81,7 @@ namespace MeallyExtended.Business.Repository
                 return null;
             }
 
-            Recipe changedRecipe = _dbContext.Recipe.Update(recipe).Entity;
+            var changedRecipe = _dbContext.Recipe.Update(recipe).Entity;
             await _dbContext.SaveChangesAsync();
             return changedRecipe;
         }
