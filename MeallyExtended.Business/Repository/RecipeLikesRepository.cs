@@ -1,4 +1,5 @@
-﻿using MeallyExtended.Business.Data;
+﻿using System.Xml.Schema;
+using MeallyExtended.Business.Data;
 using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -14,49 +15,53 @@ namespace MeallyExtended.Business.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<RecipeLikes?> AddRecipeLikes(RecipeLikes recipeLikes)
+        public async Task AddRecipeLikes(Guid recipeId)
         {
-            if (recipeLikes == null)
-            {
-                // Todo: in future maybe throw exception, assume error case will be checked in service?(bad for reusability in this case)
-                return null;
-            }
+            var recipeLikes = await _dbContext.RecipeLikes.FirstOrDefaultAsync(x => x.RecipeId == recipeId);
 
-            RecipeLikes savedRecipeLikes = _dbContext.RecipeLikes.Add(recipeLikes).Entity;
-            await _dbContext.SaveChangesAsync();
-            return savedRecipeLikes;
+            if (recipeLikes is not null)
+            {
+                recipeLikes.LikeCount++;
+                _dbContext.RecipeLikes.Update(recipeLikes);
+            }
         }
 
-        public async Task<bool> DeleteRecipeLikes(Guid recipeLikesId)
+        public async Task RemoveRecipeLikes(Guid recipeId)
         {
-            var recipeLikes = _dbContext.RecipeLikes.FirstOrDefault(r => r.RecipeId == recipeLikesId);
-            if (recipeLikes == null)
-            {
-                // Todo: in future maybe throw exception, assume error case will be checked in service?(bad for reusability in this case)
-                return false;
-            }
+            var recipeLikes = await _dbContext.RecipeLikes.FirstOrDefaultAsync(x => x.RecipeId == recipeId);
 
-            _dbContext.RecipeLikes.Remove(recipeLikes);
-            return await _dbContext.SaveChangesAsync() != 0;
+            if (recipeLikes is not null)
+            {
+                recipeLikes.LikeCount--;
+                _dbContext.RecipeLikes.Update(recipeLikes);
+            }
         }
 
+        public async Task AddClick(Guid recipeId)
+        {
+            var recipeLikes = await _dbContext.RecipeLikes.FirstOrDefaultAsync(x => x.RecipeId == recipeId);
+
+            if (recipeLikes is not null)
+            {
+                recipeLikes.ClickCount++;
+                _dbContext.RecipeLikes.Update(recipeLikes);
+            }
+        }
+
+        public async Task ClearClicks(Guid recipeId)
+        {
+            var recipeLikes = await _dbContext.RecipeLikes.FirstOrDefaultAsync(x => x.RecipeId == recipeId);
+
+            if (recipeLikes is not null)
+            {
+                recipeLikes.ClickCount = 0;
+                _dbContext.RecipeLikes.Update(recipeLikes);
+            }
+        }
 
         public async Task<RecipeLikes?> GetRecipeLikesByRecipeId(Guid recipeId)
         {
             return await _dbContext.RecipeLikes.FirstOrDefaultAsync(x => x.RecipeId == recipeId);
-        }
-
-        public async Task<RecipeLikes?> UpdateRecipeLikes(RecipeLikes recipeLikes)
-        {
-            if (recipeLikes == null)
-            {
-                // Todo: in future maybe throw exception, assume error case will be checked in service?(bad for reusability in this case)
-                return null;
-            }
-
-            RecipeLikes changedRecipe = _dbContext.RecipeLikes.Update(recipeLikes).Entity;
-            await _dbContext.SaveChangesAsync();
-            return changedRecipe;
         }
     }
 }
