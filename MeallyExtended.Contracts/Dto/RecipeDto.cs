@@ -10,11 +10,8 @@ namespace MeallyExtended.Contracts.Dto
     public class RecipeDto
     {
         public Guid Id { get; set; }
-
         public required string Title { get; set; }
-
-        public List<Ingredient> ingredients { get; set; } = [];
-
+        public List<Ingredient> Ingredients { get; set; } = [];
         public string? Description { get; set; }
         public double Duration { get; set; }
         public required string Instructions { get; set; }
