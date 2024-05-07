@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeallyExtended.Contracts.Dto
+namespace MeallyExtended.Contracts.Requests.Category
 {
-    public class CategoryDto
+    internal class UpdateCategoryRequest
     {
         public Guid Id { get; set; }
-        public required string Name { get; set; }
+        public string Name { get; set; } = null!;
     }
 }

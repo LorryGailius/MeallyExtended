@@ -1,6 +1,6 @@
 ﻿using MeallyExtended.Contracts.Enums;
 
-namespace MeallyExtended.DataModels.Entities;
+namespace MeallyExtended.Contracts.Dto;
 
 public class Ingredient
 {

@@ -13,7 +13,7 @@ namespace MeallyExtended.Contracts.Dto
 
         public required string Title { get; set; }
 
-        public IngredientDto[]? Ingredients { get; set; } = [];
+        public List<Ingredient> ingredients { get; set; } = [];
 
         public string? Description { get; set; }
         public double Duration { get; set; }
