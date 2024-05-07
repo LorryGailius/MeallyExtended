@@ -10,7 +10,19 @@ using System.Threading.Tasks;
 
 namespace MeallyExtended.Business.Mappers
 {
-    public class MeallyMapper
+    public interface IMeallyMapper
+    {
+        CategoryDto MapCategoryToDto(Category category);
+        Category MapCategoryToEntity(CategoryDto categoryDto);
+        Ingredient MapIngredientToEntity(IngredientDto ingredientDto);
+        IngredientDto MapIngredientToDto(Ingredient ingredient);
+        ReviewDto MapReviewToDto(Review review);
+        Review MapReviewToEntity(ReviewDto reviewDto);
+        RecipeDto MapRecipeToDto(Recipe recipe);
+        Recipe MapRecipeToEntity(RecipeDto recipeDto);
+    }
+
+    public class MeallyMapper : IMeallyMapper
     {
         private readonly IMapper _mapper;
 
