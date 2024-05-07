@@ -16,7 +16,7 @@ namespace MeallyExtended.API.Controllers
             
         }
 
-        [HttpGet("{recipeId}")]
+        [HttpGet("{recipeId}:guid")]
         public async Task<IActionResult> GetRecipe(Guid recipeId)
         {
             
