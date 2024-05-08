@@ -1,20 +1,15 @@
 ﻿using MeallyExtended.Contracts.Dto;
+using MeallyExtended.Contracts.Requests.Recipe;
 using MeallyExtended.DataModels.Entities;
 
 namespace MeallyExtended.Business.Interfaces
 {
     public interface IRecipeService
     {
-        public Task<Recipe> GetRecipeById(Guid recipeId);
-
-        public Task<Recipe> AddRecipe(RecipeDto recipe);
-
-        public Task<Recipe> UpdateRecipe(RecipeDto recipe);
-
-        public Task<bool> DeleteRecipe(Guid recipeId);
-
-        public Task<IEnumerable<Recipe>> GetRecipesByCategory(List<CategoryDto> categories);
-
-        public Task<Recipe> GetRecipeByTitle(string title);
+        Task<Recipe> AddRecipe(RecipeDto recipe);
+        Task<bool> DeleteRecipe(Guid recipeId);
+        Task<Recipe> GetRecipeById(Guid recipeId);
+        Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string query, IEnumerable<CategoryDto> categories, int pageNo, int pageSize);
+        Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe);
     }
 }

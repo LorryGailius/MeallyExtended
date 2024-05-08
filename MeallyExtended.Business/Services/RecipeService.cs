@@ -5,6 +5,8 @@ using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Net.Mail;
+using MeallyExtended.Contracts.Requests.Recipe;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeallyExtended.Business.Services
 {
@@ -34,7 +36,7 @@ namespace MeallyExtended.Business.Services
                     validCategories.Add(categoryEntity);
                 }
             }
-            
+
             if (string.IsNullOrEmpty(recipe.UserEmail))
             {
                 throw new ArgumentException($"{nameof(recipe.UserEmail)} can't be null.");
@@ -51,29 +53,90 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
-        public Task<bool> DeleteRecipe(Guid recipeId)
+        public async Task<bool> DeleteRecipe(Guid recipeId)
         {
-            throw new NotImplementedException();
+            var recipe = await _recipeRepository.GetRecipeById(recipeId);
+
+            if (recipe is not null)
+            {
+                await _recipeRepository.DeleteRecipe(recipeId);
+                return true;
+            }
+
+            return false;
         }
 
-        public Task<Recipe> GetRecipeById(Guid recipeId)
+        public async Task<Recipe> GetRecipeById(Guid recipeId)
         {
-            throw new NotImplementedException();
+            return await _recipeRepository.GetRecipeById(recipeId);
         }
 
-        public Task<Recipe> GetRecipeByTitle(string title)
+        public async Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string query, IEnumerable<CategoryDto> categories, int pageNo, int pageSize)
         {
-            throw new NotImplementedException();
+            var categoryList = categories.Select(MeallyMapper.CategoryDtoToCategory).ToList();
+
+            if (categoryList.Count != 0 && !string.IsNullOrEmpty(query) && !string.IsNullOrWhiteSpace(query))
+            {
+                return await GetPaginationResult(_recipeRepository.GetRecipeByQuery(query, categoryList), pageNo, pageSize);
+
+            }
+
+            if (categoryList.Count == 0)
+            {
+                return await GetPaginationResult(_recipeRepository.GetRecipeByTitle(query), pageNo, pageSize);
+            }
+
+            return await GetPaginationResult(_recipeRepository.GetRecipesByCategory(categoryList), pageNo, pageSize);
         }
 
-        public async Task<IEnumerable<Recipe>> GetRecipesByCategory(List<CategoryDto> categories)
+        private async Task<PaginationResult<RecipeDto>> GetPaginationResult(IQueryable<Recipe> recipeQuery, int pageNo, int pageSize)
         {
-            throw new NotImplementedException();
+            var totalRecipes = await recipeQuery.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecipes / (double)pageSize);
+            var recipeResult = await recipeQuery.Skip(pageNo - 1 * pageSize).Take(pageSize)
+                .Select(x => MeallyMapper.RecipeToDto(x)).ToListAsync();
+
+            return new PaginationResult<RecipeDto>
+            {
+                PageNo = pageNo,
+                PageSize = pageSize,
+                TotalPages = totalPages,
+                Data = recipeResult,
+                TotalCount = totalRecipes
+            };
         }
 
-        public async Task<Recipe> UpdateRecipe(RecipeDto recipe)
+        public async Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe)
         {
-            throw new NotImplementedException();
+            var recipeEntity = await _recipeRepository.GetRecipeById(recipe.Id);
+
+            if (recipeEntity is null)
+            {
+                return null;
+            }
+
+            var validCategories = new List<Category>();
+
+            foreach (var category in recipe.Categories)
+            {
+                var categoryEntity = await _categoryRepository.GetCategoryByName(category);
+
+                if (categoryEntity is not null)
+                {
+                    validCategories.Add(categoryEntity);
+                }
+            }
+
+            recipeEntity.Title = recipe.Title;
+            recipeEntity.Description = recipe.Description;
+            recipeEntity.Ingredients = [.. recipe.Ingredients];
+            recipeEntity.Duration = recipe.Duration;
+            recipeEntity.Instructions = recipe.Instructions;
+            recipeEntity.Categories = validCategories;
+
+            await _recipeRepository.UpdateRecipe(recipeEntity);
+
+            return recipeEntity;
         }
     }
 }

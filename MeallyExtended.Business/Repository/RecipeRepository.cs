@@ -74,17 +74,11 @@ namespace MeallyExtended.Business.Repository
             return await _dbContext.Recipe.FirstOrDefaultAsync(x => x.Id == recipeId);
         }
 
-        public async Task<Recipe?> UpdateRecipe(Recipe recipe)
+        public async Task UpdateRecipe(Recipe recipe)
         {
-            if (recipe == null)
-            {
-                // Todo: in future maybe throw exception, assume error case will be checked in service?(bad for reusability in this case)
-                return null;
-            }
-
-            var changedRecipe = _dbContext.Recipe.Update(recipe).Entity;
+            _dbContext.Recipe.Update(recipe);
+            
             await _dbContext.SaveChangesAsync();
-            return changedRecipe;
         }
     }
 }

@@ -11,6 +11,6 @@ namespace MeallyExtended.Business.Repository.Interfaces
         IQueryable<Recipe> GetRecipesByCategory(List<Category> categories);
         IQueryable<Recipe> GetRecipeByTitle(string title);
         Task<Recipe?> GetRecipeById(Guid recipeId);
-        Task<Recipe?> UpdateRecipe(Recipe recipe);
+        Task UpdateRecipe(Recipe recipe);
     }
 }
