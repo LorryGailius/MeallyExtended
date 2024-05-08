@@ -36,16 +36,26 @@ public class ReviewService : IReviewService
         return await _reviewRepository.AddReview(reviewEntity);
     }
 
-    public async Task<bool> DeleteReview(Guid reviewId)
+    public async Task<bool> DeleteReview(Guid reviewId, string userEmail)
     {
         Review? reviewToDelete = await _reviewRepository.GetReviewById(reviewId);
-
-        if (reviewToDelete is not null)
+        User? user = await _userRepository.GetUserByEmail(userEmail);
+        if (user == null)
         {
-            return await _reviewRepository.DeleteReview(reviewId);
+            throw new ArgumentException($"No such user found with email: {userEmail}.");
         }
 
-        return false;
+        if (reviewToDelete == null)
+        {
+            throw new ArgumentException($"No such review found, ID: {reviewId}");
+        }
+
+        if (user.Id == reviewToDelete.UserId)
+        {
+            throw new ArgumentException("Can't delete review because provided user is not creator of the review.");
+        }
+
+        return await _reviewRepository.DeleteReview(reviewId);
     }
 
     public async Task<IEnumerable<Review>> GetLimitedReviews(Guid recipeId, int limit, int skip)
@@ -63,17 +73,28 @@ public class ReviewService : IReviewService
         return (await _reviewRepository.GetReviewsByRecipeId(recipeId)).Skip(skip).Take(limit);
     }
 
-    public async Task<Review?> UpdateReview(UpdateReviewRequest review)
+    public async Task<Review?> UpdateReview(UpdateReviewRequest review, string userEmail)
     {
-        Review? reviewEntity = await _reviewRepository.GetReviewById(review.Id);
-        if (reviewEntity == null)
+        Review? reviewToUpdate = await _reviewRepository.GetReviewById(review.Id);
+        User? user = await _userRepository.GetUserByEmail(userEmail);
+        if (user == null)
+        {
+            throw new ArgumentException($"No such user found with email: {userEmail}.");
+        }
+
+        if (reviewToUpdate == null)
         {
             throw new ArgumentException($"No such review found, ID: {review.Id}");
         }
 
-        reviewEntity.Text = review.Text;
-        reviewEntity.ModifiedDate = DateTime.UtcNow;
+        if (user.Id == reviewToUpdate.UserId)
+        {
+            throw new ArgumentException("Can't delete review because provided user is not creator of the review.");
+        }
 
-        return await _reviewRepository.UpdateReview(reviewEntity);
+        reviewToUpdate.Text = review.Text;
+        reviewToUpdate.ModifiedDate = DateTime.UtcNow;
+
+        return await _reviewRepository.UpdateReview(reviewToUpdate);
     }
 }

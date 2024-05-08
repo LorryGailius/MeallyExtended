@@ -8,7 +8,7 @@ namespace MeallyExtended.Business.Interfaces
     {
         Task<IEnumerable<Review>> GetLimitedReviews(Guid recipeId, int limit, int skip);
         Task<Review?> AddReview(ReviewDto review);
-        Task<Review?> UpdateReview(UpdateReviewRequest review);
-        Task<bool> DeleteReview(Guid reviewId);
+        Task<Review?> UpdateReview(UpdateReviewRequest review, string userEmail);
+        Task<bool> DeleteReview(Guid reviewId, string userEmail);
     }
 }
