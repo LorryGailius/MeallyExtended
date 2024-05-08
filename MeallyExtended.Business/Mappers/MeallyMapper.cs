@@ -73,12 +73,12 @@ namespace MeallyExtended.Business.Mappers
             };
         }
 
-        public static ReviewDto CreateReviewRequestToReviewDto(CreateReviewRequest createReviewRequest)
+        public static ReviewDto CreateReviewRequestToReviewDto(CreateReviewRequest createReviewRequest, string userEmail)
         {
             return new ReviewDto
             {
                 RecipeId = createReviewRequest.RecipeId,
-                UserEmail = createReviewRequest.UserEmail,
+                UserEmail = userEmail,
                 Text = createReviewRequest.Text,
                 CreatedDate = createReviewRequest.CreatedDate
             };
