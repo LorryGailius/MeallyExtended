@@ -13,6 +13,7 @@ namespace MeallyExtended.Business.Services
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IRecipeLikesRepository _recipeLikesRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUserRepository _userRepository;
 
@@ -68,7 +69,16 @@ namespace MeallyExtended.Business.Services
 
         public async Task<Recipe> GetRecipeById(Guid recipeId)
         {
-            return await _recipeRepository.GetRecipeById(recipeId);
+            var recipe = await _recipeRepository.GetRecipeById(recipeId);
+
+            if (recipe is null)
+            {
+                return null;
+            }
+
+            await _recipeLikesRepository.AddClick(recipeId);
+
+            return recipe;
         }
 
         public async Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string query, IEnumerable<CategoryDto> categories, int pageNo, int pageSize)
@@ -137,6 +147,11 @@ namespace MeallyExtended.Business.Services
             await _recipeRepository.UpdateRecipe(recipeEntity);
 
             return recipeEntity;
+        }
+
+        public Task<IEnumerable<Recipe>> GetPopularRecipes()
+        {
+            throw new NotImplementedException();
         }
     }
 }

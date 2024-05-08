@@ -1,4 +1,5 @@
-﻿using MeallyExtended.Business.Data;
+﻿using System.Xml.Schema;
+using MeallyExtended.Business.Data;
 using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -71,7 +72,7 @@ namespace MeallyExtended.Business.Repository
 
         public async Task<Recipe?> GetRecipeById(Guid recipeId)
         {
-            return await _dbContext.Recipe.FirstOrDefaultAsync(x => x.Id == recipeId);
+            return await _dbContext.Recipe.Include(x => x.RecipeLikes).FirstOrDefaultAsync(x => x.Id == recipeId);
         }
 
         public async Task UpdateRecipe(Recipe recipe)

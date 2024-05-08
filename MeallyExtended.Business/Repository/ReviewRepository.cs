@@ -21,12 +21,13 @@ namespace MeallyExtended.Business.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Review>> GetLimitedReviews(Guid recipeId, int limit)
+        public async Task<IEnumerable<Review>> GetLimitedReviews(Guid recipeId, int limit, int skip)
         {
             return await _dbContext.Review
                 .Where(r => r.RecipeId == recipeId)
                 .OrderBy(x => x.ModifiedDate)
                 .ThenBy(x => x.CreatedDate)
+                .Skip(skip)
                 .Take(limit)
                 .ToListAsync();
         }

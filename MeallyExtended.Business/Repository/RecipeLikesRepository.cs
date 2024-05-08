@@ -23,6 +23,7 @@ namespace MeallyExtended.Business.Repository
             {
                 recipeLikes.LikeCount++;
                 _dbContext.RecipeLikes.Update(recipeLikes);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
@@ -34,6 +35,7 @@ namespace MeallyExtended.Business.Repository
             {
                 recipeLikes.LikeCount--;
                 _dbContext.RecipeLikes.Update(recipeLikes);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
@@ -45,6 +47,7 @@ namespace MeallyExtended.Business.Repository
             {
                 recipeLikes.ClickCount++;
                 _dbContext.RecipeLikes.Update(recipeLikes);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
@@ -56,6 +59,7 @@ namespace MeallyExtended.Business.Repository
             {
                 recipeLikes.ClickCount = 0;
                 _dbContext.RecipeLikes.Update(recipeLikes);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
