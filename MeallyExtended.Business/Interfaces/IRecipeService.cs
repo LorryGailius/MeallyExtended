@@ -5,16 +5,16 @@ namespace MeallyExtended.Business.Interfaces
 {
     public interface IRecipeService
     {
-        public RecipeDto GetRecipeById(Guid recipeId);
+        public Task<Recipe> GetRecipeById(Guid recipeId);
 
         public Task<Recipe> AddRecipe(RecipeDto recipe);
 
-        public bool UpdateRecipe(RecipeDto recipe);
+        public Task<Recipe> UpdateRecipe(RecipeDto recipe);
 
         public bool DeleteRecipe(Guid recipeId);
 
-        public IEnumerable<RecipeDto> GetRecipesByCategory(List<CategoryDto> categories);
+        public Task<IEnumerable<Recipe>> GetRecipesByCategory(List<CategoryDto> categories);
 
-        public RecipeDto GetRecipeByTitle(string title);
+        public Task<Recipe> GetRecipeByTitle(string title);
     }
 }

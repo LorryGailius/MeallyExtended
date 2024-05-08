@@ -4,6 +4,7 @@ using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Net.Mail;
 
 namespace MeallyExtended.Business.Services
 {
@@ -31,6 +32,11 @@ namespace MeallyExtended.Business.Services
                     validCategories.Add(categoryEntity);
                 }
             }
+            
+            if (string.IsNullOrEmpty(recipe.UserEmail))
+            {
+                throw new ArgumentException($"{nameof(recipe.UserEmail)} can't be null.");
+            }
 
             var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe, validCategories);
 
@@ -43,25 +49,27 @@ namespace MeallyExtended.Business.Services
 
         public bool DeleteRecipe(Guid recipeId)
         {
+            _recipeRepository.DeleteRecipe(recipeId);
             throw new NotImplementedException();
+
         }
 
-        public RecipeDto GetRecipeById(Guid recipeId)
+        public Task<Recipe> GetRecipeById(Guid recipeId)
         {
             throw new NotImplementedException();
         }
 
-        public RecipeDto GetRecipeByTitle(string title)
+        public Task<Recipe> GetRecipeByTitle(string title)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RecipeDto> GetRecipesByCategory(List<CategoryDto> categories)
+        public async Task<IEnumerable<Recipe>> GetRecipesByCategory(List<CategoryDto> categories)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateRecipe(RecipeDto recipe)
+        public async Task<Recipe> UpdateRecipe(RecipeDto recipe)
         {
             throw new NotImplementedException();
         }
