@@ -20,11 +20,9 @@ namespace MeallyExtended.Business.Services
 
         public async Task<Recipe> AddRecipe(RecipeDto recipe)
         {
-            var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe);
-
             var validCategories = new List<Category>();
 
-            foreach (var category in recipeEntity.Categories)
+            foreach (var category in recipe.Categories)
             {
                 var categoryEntity = await _categoryRepository.GetCategoryByName(category.Name);
 
@@ -33,6 +31,8 @@ namespace MeallyExtended.Business.Services
                     validCategories.Add(categoryEntity);
                 }
             }
+
+            var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe, validCategories);
 
             recipeEntity.Categories = validCategories;
 

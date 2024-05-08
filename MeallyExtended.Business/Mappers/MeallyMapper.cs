@@ -112,7 +112,7 @@ namespace MeallyExtended.Business.Mappers
             };
         }
 
-        public static Recipe RecipeDtoToRecipe(RecipeDto recipeDto)
+        public static Recipe RecipeDtoToRecipe(RecipeDto recipeDto, List<Category> categories)
         {
             return new Recipe
             {
@@ -122,8 +122,7 @@ namespace MeallyExtended.Business.Mappers
                 Ingredients = recipeDto.Ingredients.ToArray(),
                 Instructions = recipeDto.Instructions,
                 Duration = recipeDto.Duration,
-                Categories = recipeDto.Categories.Select(c => new Category {Name = c.Name }).ToList(),
-                Reviews = recipeDto.Reviews.Select(r => new Review { Id = r.Id, Text = r.Text, CreatedDate = r.CreatedDate }).ToList()
+                Categories = categories
             };
         }
 
