@@ -75,7 +75,7 @@ namespace MeallyExtended.Business.Repository
             return await _dbContext.Recipe.Include(x => x.RecipeLikes).FirstOrDefaultAsync(x => x.Id == recipeId);
         }
 
-        public async Task<IQueryable<Recipe>> GetQuery()
+        public IQueryable<Recipe> GetQuery()
         {
             return _dbContext.Recipe;
         }

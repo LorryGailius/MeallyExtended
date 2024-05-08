@@ -11,7 +11,6 @@ namespace MeallyExtended.Business.Interfaces
         Task<Recipe> GetRecipeById(Guid recipeId);
         Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string query, IEnumerable<CategoryDto> categories, int pageNo, int pageSize);
         Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe);
-        Task<IQueryable<Recipe>> GetQuery();
         Task<Recipe> LikeRecipe(Guid recipeId, string userId);
     }
 }
