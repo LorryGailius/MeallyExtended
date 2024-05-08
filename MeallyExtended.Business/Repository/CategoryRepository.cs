@@ -25,10 +25,9 @@ namespace MeallyExtended.Business.Repository
                 .Where(c => c.Recipes.Any(r => r.Id == recipeId)).ToListAsync();
         }
 
-        public async Task<Category?> GetCategoryById(Guid categoryId)
+        public async Task<Category?> GetCategoryByName(string name)
         {
-            return await _dbContext.Category
-                .FindAsync(categoryId);
+            return await _dbContext.Category.FirstOrDefaultAsync(x => x.Name == name);
         }
 
         public async Task<Category?> AddCategory(Category category)
