@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using MeallyExtended.Contracts.Dto;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace MeallyExtended.DataModels.Entities;
 
@@ -14,8 +15,8 @@ public class Recipe
     [Column(TypeName = "nvarchar(max)")]
     public string IngredientsJson
     {
-        get => JsonConvert.SerializeObject(Ingredients);
-        set => Ingredients = JsonConvert.DeserializeObject<Ingredient[]>(value);
+        get => JsonSerializer.Serialize(Ingredients);
+        set => Ingredients = JsonSerializer.Deserialize<Ingredient[]>(value);
     }
 
     public string? Description { get; set; }
@@ -24,9 +25,7 @@ public class Recipe
     public List<Category> Categories { get; set; } = [];
     public List<Review> Reviews { get; set; } = [];
     public RecipeLikes RecipeLikes { get; set; } = null!;
-
     public List<User> UsersLiked { get; set; } = null!;
-
     public string? UserId { get; set; }
     public User User { get; set; } = null!;
 }
