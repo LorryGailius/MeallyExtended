@@ -11,7 +11,7 @@ namespace MeallyExtended.Business.Interfaces
 
         public Task<Recipe> UpdateRecipe(RecipeDto recipe);
 
-        public bool DeleteRecipe(Guid recipeId);
+        public Task<bool> DeleteRecipe(Guid recipeId);
 
         public Task<IEnumerable<Recipe>> GetRecipesByCategory(List<CategoryDto> categories);
 

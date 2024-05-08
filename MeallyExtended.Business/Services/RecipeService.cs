@@ -51,11 +51,9 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
-        public bool DeleteRecipe(Guid recipeId)
+        public Task<bool> DeleteRecipe(Guid recipeId)
         {
-            _recipeRepository.DeleteRecipe(recipeId);
             throw new NotImplementedException();
-
         }
 
         public Task<Recipe> GetRecipeById(Guid recipeId)
