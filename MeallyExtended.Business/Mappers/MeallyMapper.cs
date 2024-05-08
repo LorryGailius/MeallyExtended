@@ -107,8 +107,8 @@ namespace MeallyExtended.Business.Mappers
                 Instructions = recipe.Instructions,
                 LikesCount = recipe.RecipeLikes.LikeCount,
                 Duration = recipe.Duration,
-                Categories = recipe.Categories.Select(c => CategoryToDto(c)).ToList(),
-                Reviews = recipe.Reviews.Select(r => ReviewToDto(r)).ToList(),
+                Categories = recipe.Categories.Select(CategoryToDto).ToList(),
+                Reviews = recipe.Reviews.Select(ReviewToDto).ToList(),
             };
         }
 
