@@ -109,15 +109,18 @@ namespace MeallyExtended.Business.Mappers
                 Duration = recipe.Duration,
                 Categories = recipe.Categories.Select(CategoryToDto).ToList(),
                 Reviews = recipe.Reviews.Select(ReviewToDto).ToList(),
+                UserEmail = recipe.User.Email
             };
         }
 
-        public static Recipe RecipeDtoToRecipe(RecipeDto recipeDto, List<Category> categories)
+        public static Recipe RecipeDtoToRecipe(RecipeDto recipeDto, List<Category> categories, User user)
         {
             return new Recipe
             {
                 Id = recipeDto.Id,
                 Title = recipeDto.Title,
+                UserId = user.Email,
+                User = user,
                 Description = recipeDto.Description,
                 Ingredients = recipeDto.Ingredients.ToArray(),
                 Instructions = recipeDto.Instructions,
@@ -126,11 +129,12 @@ namespace MeallyExtended.Business.Mappers
             };
         }
 
-        public static RecipeDto CreateRecipeRequestToRecipeDto(CreateRecipeRequest createRecipeRequest)
+        public static RecipeDto CreateRecipeRequestToRecipeDto(CreateRecipeRequest createRecipeRequest, string userEmail)
         {
             return new RecipeDto
             {
                 Title = createRecipeRequest.Title,
+                UserEmail = userEmail,
                 Description = createRecipeRequest.Description,
                 Ingredients = createRecipeRequest.Ingredients,
                 Instructions = createRecipeRequest.Instructions,

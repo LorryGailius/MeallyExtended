@@ -11,11 +11,13 @@ namespace MeallyExtended.Business.Services
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IUserRepository _userRepository;
 
-        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository)
+        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository, IUserRepository userRepository)
         {
             _recipeRepository = recipeRepository;
             _categoryRepository = categoryRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<Recipe> AddRecipe(RecipeDto recipe)
@@ -32,7 +34,9 @@ namespace MeallyExtended.Business.Services
                 }
             }
 
-            var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe, validCategories);
+            var user = await _userRepository.GetUserById(recipe.UserEmail);
+
+            var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe, validCategories, user);
 
             recipeEntity.Categories = validCategories;
 

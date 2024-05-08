@@ -1,6 +1,9 @@
-﻿using MeallyExtended.Business.Interfaces;
+﻿using System.Security.Claims;
+using MeallyExtended.Business.Interfaces;
 using MeallyExtended.Business.Mappers;
 using MeallyExtended.Contracts.Requests.Recipe;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeallyExtended.API.Controllers
@@ -17,9 +20,12 @@ namespace MeallyExtended.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest request)
         {
-            var recipe = MeallyMapper.CreateRecipeRequestToRecipeDto(request);
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
+            var recipe = MeallyMapper.CreateRecipeRequestToRecipeDto(request, userEmail);
             var result = await _recipeService.AddRecipe(recipe);
 
             return CreatedAtAction("GetRecipe", new { recipeId = result.Id }, MeallyMapper.RecipeToDto(result));
