@@ -1,4 +1,5 @@
 ﻿using MeallyExtended.Contracts.Dto;
+using MeallyExtended.Contracts.Requests.Review;
 using MeallyExtended.DataModels.Entities;
 
 namespace MeallyExtended.Business.Interfaces
@@ -7,7 +8,7 @@ namespace MeallyExtended.Business.Interfaces
     {
         Task<IEnumerable<Review>> GetLimitedReviews(Guid recipeId, int limit, int skip);
         Task<Review?> AddReview(ReviewDto review);
-        Task<Review?> UpdateReview(ReviewDto review);
+        Task<Review?> UpdateReview(UpdateReviewRequest review);
         Task<bool> DeleteReview(Guid reviewId);
     }
 }
