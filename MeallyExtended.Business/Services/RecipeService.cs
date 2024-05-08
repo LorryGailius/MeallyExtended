@@ -149,7 +149,7 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
-        public Task<IEnumerable<Recipe>> GetPopularRecipes()
+        public Task<Recipe> LikeRecipe(Guid recipeId, string userId)
         {
             throw new NotImplementedException();
         }
