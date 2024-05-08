@@ -22,9 +22,16 @@ namespace MeallyExtended.Business.Repository
                 return null;
             }
 
-            var savedRecipe = _dbContext.Recipe.Add(recipe).Entity;
+            var recipeLikes = new RecipeLikes
+            {
+                Recipe = recipe,
+                RecipeId = recipe.Id
+            };
+
+            await _dbContext.RecipeLikes.AddAsync(recipeLikes);
+            await _dbContext.Recipe.AddAsync(recipe);
             await _dbContext.SaveChangesAsync();
-            return savedRecipe;
+            return recipe;
         }
 
         public async Task<bool> DeleteRecipe(Guid recipeId)

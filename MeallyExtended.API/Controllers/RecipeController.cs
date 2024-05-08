@@ -16,14 +16,14 @@ namespace MeallyExtended.API.Controllers
             _recipeService = recipeService;
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest request)
-        //{
-        //    var recipe = MeallyMapper.MapCreateRecipeRequestToDto(request);
-        //    var result = _recipeService.AddRecipe(recipe);
+        [HttpPost]
+        public async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest request)
+        {
+            var recipe = MeallyMapper.CreateRecipeRequestToRecipeDto(request);
+            var result = await _recipeService.AddRecipe(recipe);
 
-        //    return CreatedAtAction("GetRecipe", new { recipeId = result.Id }, result);
-        //}
+            return CreatedAtAction("GetRecipe", new { recipeId = result.Id }, MeallyMapper.RecipeToDto(result));
+        }
 
         [HttpGet("{recipeId}:guid")]
         public async Task<IActionResult> GetRecipe(Guid recipeId)
