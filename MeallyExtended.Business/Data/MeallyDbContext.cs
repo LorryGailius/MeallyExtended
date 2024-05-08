@@ -25,9 +25,9 @@ namespace MeallyExtended.Business.Data
             {
                 entity.ToTable("Category");
 
-                entity.HasKey(c => c.Id);
+                entity.HasKey(c => c.Name);
 
-                entity.Property(c => c.Name).IsRequired().HasMaxLength(450);
+                entity.Property(c => c.Name).HasMaxLength(450);
             });
 
             builder.Entity<Recipe>(entity =>
