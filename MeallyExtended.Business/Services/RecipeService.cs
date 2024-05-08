@@ -34,7 +34,7 @@ namespace MeallyExtended.Business.Services
                 }
             }
 
-            var user = await _userRepository.GetUserById(recipe.UserEmail);
+            var user = await _userRepository.GetUserByEmail(recipe.UserEmail);
 
             var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe, validCategories, user);
 

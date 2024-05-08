@@ -4,6 +4,6 @@ namespace MeallyExtended.Business.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User?> GetUserById(string userEmail);
+        Task<User?> GetUserByEmail(string userEmail);
     }
 }

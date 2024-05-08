@@ -14,7 +14,7 @@ namespace MeallyExtended.Business.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<User?> GetUserById(string userEmail)
+        public async Task<User?> GetUserByEmail(string userEmail)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
         }
