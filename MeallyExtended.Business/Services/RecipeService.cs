@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System.Net.Mail;
 using MeallyExtended.Contracts.Requests.Recipe;
 using Microsoft.EntityFrameworkCore;
-using ICategoryService = MeallyExtended.Business.Repository.Interfaces.ICategoryService;
 
 namespace MeallyExtended.Business.Services
 {
@@ -15,13 +14,13 @@ namespace MeallyExtended.Business.Services
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IRecipeLikesRepository _recipeLikesRepository;
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IUserService _userService;
 
-        public RecipeService(IRecipeRepository recipeRepository, ICategoryService categoryService, IUserService userService)
+        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository, IUserService userService)
         {
             _recipeRepository = recipeRepository;
-            _categoryService = categoryService;
+            _categoryRepository = categoryRepository;
             _userService = userService;
         }
 
@@ -31,7 +30,7 @@ namespace MeallyExtended.Business.Services
 
             foreach (var category in recipe.Categories)
             {
-                var categoryEntity = await _categoryService.GetCategoryByName(category.Name);
+                var categoryEntity = await _categoryRepository.GetCategoryByName(category.Name);
 
                 if (categoryEntity is not null)
                 {
@@ -130,7 +129,7 @@ namespace MeallyExtended.Business.Services
 
             foreach (var category in recipe.Categories)
             {
-                var categoryEntity = await _categoryService.GetCategoryByName(category);
+                var categoryEntity = await _categoryRepository.GetCategoryByName(category);
 
                 if (categoryEntity is not null)
                 {
