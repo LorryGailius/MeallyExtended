@@ -35,6 +35,7 @@ namespace MeallyExtended.API
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
             builder.Services.AddScoped<IRecipeService, RecipeService>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();

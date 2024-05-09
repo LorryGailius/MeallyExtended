@@ -1,8 +1,12 @@
 ﻿using MeallyExtended.Business.Interfaces;
-using MeallyExtended.Data.Repositories.Interfaces;
+using MeallyExtended.Business.Mappers;
+using MeallyExtended.Business.Repository.Interfaces;
+using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
-using System;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Net.Mail;
+using MeallyExtended.Contracts.Requests.Category;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeallyExtended.Business.Services
 {
