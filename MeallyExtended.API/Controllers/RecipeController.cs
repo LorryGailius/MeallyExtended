@@ -63,7 +63,7 @@ namespace MeallyExtended.API.Controllers
         }
 
         [HttpGet("suggestion")]
-        public async Task<IActionResult> GetSearchSuggestions([FromQuery] string query, [FromQuery] int amount)
+        public async Task<IActionResult> GetSearchSuggestions([FromQuery] string query, [FromQuery] int amount = 5)
         {
             var result = await _recipeService.GetSearchSuggestions(query, amount);
 
