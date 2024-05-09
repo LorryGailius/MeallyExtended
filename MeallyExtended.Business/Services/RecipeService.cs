@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System.Net.Mail;
 using MeallyExtended.Contracts.Requests.Recipe;
 using Microsoft.EntityFrameworkCore;
+using ICategoryService = MeallyExtended.Business.Repository.Interfaces.ICategoryService;
 
 namespace MeallyExtended.Business.Services
 {
@@ -14,14 +15,14 @@ namespace MeallyExtended.Business.Services
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IRecipeLikesRepository _recipeLikesRepository;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly ICategoryService _categoryService;
+        private readonly IUserService _userService;
 
-        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository, IUserRepository userRepository)
+        public RecipeService(IRecipeRepository recipeRepository, ICategoryService categoryService, IUserService userService)
         {
             _recipeRepository = recipeRepository;
-            _categoryRepository = categoryRepository;
-            _userRepository = userRepository;
+            _categoryService = categoryService;
+            _userService = userService;
         }
 
         public async Task<Recipe> AddRecipe(RecipeDto recipe)
@@ -30,7 +31,7 @@ namespace MeallyExtended.Business.Services
 
             foreach (var category in recipe.Categories)
             {
-                var categoryEntity = await _categoryRepository.GetCategoryByName(category.Name);
+                var categoryEntity = await _categoryService.GetCategoryByName(category.Name);
 
                 if (categoryEntity is not null)
                 {
@@ -43,7 +44,7 @@ namespace MeallyExtended.Business.Services
                 throw new ArgumentException($"{nameof(recipe.UserEmail)} can't be null.");
             }
 
-            var user = await _userRepository.GetUserByEmail(recipe.UserEmail);
+            var user = await _userService.GetUserByEmail(recipe.UserEmail);
 
             var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe, validCategories, user);
 
@@ -129,7 +130,7 @@ namespace MeallyExtended.Business.Services
 
             foreach (var category in recipe.Categories)
             {
-                var categoryEntity = await _categoryRepository.GetCategoryByName(category);
+                var categoryEntity = await _categoryService.GetCategoryByName(category);
 
                 if (categoryEntity is not null)
                 {
@@ -149,9 +150,16 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
-        public Task<Recipe> LikeRecipe(Guid recipeId, string userId)
+        public async Task LikeRecipe(Guid recipeId, string userId)
         {
-            throw new NotImplementedException();
+            var recipe = await _recipeRepository.GetRecipeById(recipeId);
+
+            if (recipe is not null)
+            {
+                await _userService.AddFavoriteRecipe(userId, recipe);
+            }
+
+            throw new ArgumentException("Recipe not found.");
         }
     }
 }

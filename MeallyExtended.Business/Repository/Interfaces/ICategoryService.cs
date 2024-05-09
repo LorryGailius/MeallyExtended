@@ -2,7 +2,7 @@
 
 namespace MeallyExtended.Business.Repository.Interfaces
 {
-    public interface ICategoryRepository
+    public interface ICategoryService
     {
         public Task<IEnumerable<Category>> GetCategories();
         public Task<IEnumerable<Category>> GetCategoriesByRecipeId(Guid recipeId);

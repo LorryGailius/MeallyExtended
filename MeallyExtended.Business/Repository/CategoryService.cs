@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeallyExtended.Business.Repository
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryService : ICategoryService
     {
         private readonly MeallyDbContext _dbContext;
 
-        public CategoryRepository(MeallyDbContext dbContext)
+        public CategoryService(MeallyDbContext dbContext)
         {
             _dbContext = dbContext;
         }
