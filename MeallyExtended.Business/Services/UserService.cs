@@ -22,5 +22,15 @@ namespace MeallyExtended.Business.Services
         {
             await _userRepository.AddFavoriteRecipe(userEmail, recipe);
         }
+
+        public async Task RemoveFavoriteRecipe(string userEmail, Recipe recipe)
+        {
+            await _userRepository.RemoveFavoriteRecipe(userEmail, recipe);
+        }
+
+        public async Task<List<Recipe>> GetFavoriteRecipes(string userEmail)
+        {
+            return await _userRepository.GetFavoriteRecipes(userEmail);
+        }
     }
 }

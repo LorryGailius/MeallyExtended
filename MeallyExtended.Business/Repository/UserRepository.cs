@@ -33,5 +33,29 @@ namespace MeallyExtended.Business.Repository
                 await _dbContext.SaveChangesAsync();
             }
         }
+
+        public async Task<List<Recipe>> GetFavoriteRecipes(string userEmail)
+        {
+            var user = await _dbContext.Users
+                .Where(x => x.Email == userEmail)
+                .Include(x => x.LikedRecipes)
+                .FirstOrDefaultAsync();
+
+            return user?.LikedRecipes.ToList() ?? new List<Recipe>();
+        }
+
+        public async Task RemoveFavoriteRecipe(string userEmail, Recipe recipe)
+        {
+            var user = await _dbContext.Users
+                .Where(x => x.Email == userEmail)
+                .Include(x => x.LikedRecipes)
+                .FirstOrDefaultAsync();
+
+            if (user is not null && user.LikedRecipes.Any(x => x == recipe))
+            {
+                user.LikedRecipes.Remove(recipe);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
     }
 }

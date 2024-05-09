@@ -154,6 +154,15 @@ namespace MeallyExtended.Business.Services
 
             if (recipe is not null)
             {
+                var userRecipes = await _userService.GetFavoriteRecipes(userEmail);
+
+                if (userRecipes.Any(x => x.Id == recipeId))
+                {
+                    await _userService.RemoveFavoriteRecipe(userEmail, recipe);
+                    await _recipeLikesRepository.RemoveRecipeLikes(recipeId);
+                    return;
+                }
+
                 await _userService.AddFavoriteRecipe(userEmail, recipe);
                 await _recipeLikesRepository.AddRecipeLikes(recipeId);
                 return;
