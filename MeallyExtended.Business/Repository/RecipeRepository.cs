@@ -54,15 +54,16 @@ namespace MeallyExtended.Business.Repository
                 .ToListAsync();
         }
 
-        public IQueryable<Recipe> GetRecipeByQuery(string query, List<Category> categories)
+        public IQueryable<Recipe> GetRecipeByQuery(string query, List<string> categories)
         {
             return _dbContext.Recipe.Include(x => x.Categories)
-                .Where(x => x.Categories.Any(categories.Contains) && x.Title.Contains(query));
+                .Where(x => x.Categories.Any(x => categories.Any(y => y == x.Name)) && x.Title.Contains(query));
         }
 
-        public IQueryable<Recipe> GetRecipesByCategory(List<Category> categories)
+        public IQueryable<Recipe> GetRecipesByCategory(List<string> categories)
         {
-            return _dbContext.Recipe.Include(x => x.Categories).Where(x => x.Categories.Any(y => categories.Contains(y)));
+            return _dbContext.Recipe.Include(x => x.Categories)
+                .Where(x => x.Categories.Any(x => categories.Any(y => y == x.Name)));
         }
 
         public IQueryable<Recipe> GetRecipeByTitle(string title)
@@ -72,7 +73,7 @@ namespace MeallyExtended.Business.Repository
 
         public async Task<Recipe?> GetRecipeById(Guid recipeId)
         {
-            return await _dbContext.Recipe.Include(x => x.RecipeLikes).FirstOrDefaultAsync(x => x.Id == recipeId);
+            return await _dbContext.Recipe.Include(x => x.Categories).Include(x => x.RecipeLikes).Include(x => x.User).FirstOrDefaultAsync(x => x.Id == recipeId);
         }
 
         public IQueryable<Recipe> GetQuery()
