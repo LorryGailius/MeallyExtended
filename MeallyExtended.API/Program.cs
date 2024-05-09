@@ -7,7 +7,6 @@ using MeallyExtended.Business.Services;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MeallyExtended.Business.Mappers;
 
 namespace MeallyExtended.API
 {

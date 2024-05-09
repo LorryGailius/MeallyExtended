@@ -15,13 +15,13 @@ namespace MeallyExtended.Business.Services
         private readonly IRecipeRepository _recipeRepository;
         private readonly IRecipeLikesRepository _recipeLikesRepository;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository, IUserRepository userRepository)
+        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository, IUserService userService)
         {
             _recipeRepository = recipeRepository;
             _categoryRepository = categoryRepository;
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public async Task<Recipe> AddRecipe(RecipeDto recipe)
@@ -43,7 +43,7 @@ namespace MeallyExtended.Business.Services
                 throw new ArgumentException($"{nameof(recipe.UserEmail)} can't be null.");
             }
 
-            var user = await _userRepository.GetUserByEmail(recipe.UserEmail);
+            var user = await _userService.GetUserByEmail(recipe.UserEmail);
 
             var recipeEntity = MeallyMapper.RecipeDtoToRecipe(recipe, validCategories, user);
 
@@ -149,9 +149,16 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
-        public Task<Recipe> LikeRecipe(Guid recipeId, string userId)
+        public async Task LikeRecipe(Guid recipeId, string userId)
         {
-            throw new NotImplementedException();
+            var recipe = await _recipeRepository.GetRecipeById(recipeId);
+
+            if (recipe is not null)
+            {
+                await _userService.AddFavoriteRecipe(userId, recipe);
+            }
+
+            throw new ArgumentException("Recipe not found.");
         }
     }
 }
