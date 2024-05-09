@@ -7,7 +7,6 @@ using MeallyExtended.Business.Services;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MeallyExtended.Business.Mappers;
 
 namespace MeallyExtended.API
 {
@@ -34,7 +33,7 @@ namespace MeallyExtended.API
 
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
             builder.Services.AddScoped<IRecipeService, RecipeService>();
-            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
 

@@ -18,5 +18,19 @@ namespace MeallyExtended.Business.Repository
         {
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
         }
+
+        public async Task AddFavoriteRecipe(string userId, Recipe recipe)
+        {
+            var user = await _dbContext.Users
+                .Where(x => x.Id == userId)
+                .Include(x => x.LikedRecipes)
+                .FirstOrDefaultAsync();
+
+            if (user is not null)
+            {
+                user.LikedRecipes.Add(recipe);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
     }
 }
