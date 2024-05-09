@@ -1,4 +1,5 @@
-﻿using MeallyExtended.Business.Data;
+﻿using System.Xml.Schema;
+using MeallyExtended.Business.Data;
 using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -19,14 +20,14 @@ namespace MeallyExtended.Business.Repository
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
         }
 
-        public async Task AddFavoriteRecipe(string userId, Recipe recipe)
+        public async Task AddFavoriteRecipe(string userEmail, Recipe recipe)
         {
             var user = await _dbContext.Users
-                .Where(x => x.Id == userId)
+                .Where(x => x.Email == userEmail)
                 .Include(x => x.LikedRecipes)
                 .FirstOrDefaultAsync();
 
-            if (user is not null)
+            if (user is not null && user.LikedRecipes.All(x => x.Id != recipe.Id))
             {
                 user.LikedRecipes.Add(recipe);
                 await _dbContext.SaveChangesAsync();

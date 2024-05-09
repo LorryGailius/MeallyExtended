@@ -17,11 +17,12 @@ namespace MeallyExtended.Business.Services
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUserService _userService;
 
-        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository, IUserService userService)
+        public RecipeService(IRecipeRepository recipeRepository, ICategoryRepository categoryRepository, IUserService userService, IRecipeLikesRepository recipeLikesRepository)
         {
             _recipeRepository = recipeRepository;
             _categoryRepository = categoryRepository;
             _userService = userService;
+            _recipeLikesRepository = recipeLikesRepository;
         }
 
         public async Task<Recipe> AddRecipe(RecipeDto recipe)
@@ -54,11 +55,11 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
-        public async Task<bool> DeleteRecipe(Guid recipeId)
+        public async Task<bool> DeleteRecipe(Guid recipeId, string userEmail)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);
 
-            if (recipe is not null)
+            if (recipe is not null && recipe.User.Email == userEmail)
             {
                 await _recipeRepository.DeleteRecipe(recipeId);
                 return true;
@@ -81,30 +82,28 @@ namespace MeallyExtended.Business.Services
             return recipe;
         }
 
-        public async Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string query, IEnumerable<CategoryDto> categories, int pageNo, int pageSize)
+        public async Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string? query, List<string>? categories, int pageNo = 1, int pageSize = 10)
         {
-            var categoryList = categories.Select(MeallyMapper.CategoryDtoToCategory).ToList();
-
-            if (categoryList.Count != 0 && !string.IsNullOrEmpty(query) && !string.IsNullOrWhiteSpace(query))
+            if (categories.Count != 0 && !string.IsNullOrEmpty(query) && !string.IsNullOrWhiteSpace(query))
             {
-                return await GetPaginationResult(_recipeRepository.GetRecipeByQuery(query, categoryList), pageNo, pageSize);
+                return await GetPaginationResult(_recipeRepository.GetRecipeByQuery(query, categories), pageNo, pageSize);
 
             }
 
-            if (categoryList.Count == 0)
+            if (categories.Count == 0 || categories is null)
             {
                 return await GetPaginationResult(_recipeRepository.GetRecipeByTitle(query), pageNo, pageSize);
             }
 
-            return await GetPaginationResult(_recipeRepository.GetRecipesByCategory(categoryList), pageNo, pageSize);
+            return await GetPaginationResult(_recipeRepository.GetRecipesByCategory(categories), pageNo, pageSize);
         }
 
         private async Task<PaginationResult<RecipeDto>> GetPaginationResult(IQueryable<Recipe> recipeQuery, int pageNo, int pageSize)
         {
             var totalRecipes = await recipeQuery.CountAsync();
             var totalPages = (int)Math.Ceiling(totalRecipes / (double)pageSize);
-            var recipeResult = await recipeQuery.Skip(pageNo - 1 * pageSize).Take(pageSize)
-                .Select(x => MeallyMapper.RecipeToDto(x)).ToListAsync();
+            var recipeResult = await recipeQuery.Skip((pageNo - 1) * pageSize).Take(pageSize)
+                .Include(x => x.User).Include(x => x.RecipeLikes).Include(x => x.Categories).Select(x => MeallyMapper.RecipeToDto(x)).ToListAsync();
 
             return new PaginationResult<RecipeDto>
             {
@@ -149,16 +148,23 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
-        public async Task LikeRecipe(Guid recipeId, string userId)
+        public async Task LikeRecipe(Guid recipeId, string userEmail)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);
 
             if (recipe is not null)
             {
-                await _userService.AddFavoriteRecipe(userId, recipe);
+                await _userService.AddFavoriteRecipe(userEmail, recipe);
+                await _recipeLikesRepository.AddRecipeLikes(recipeId);
+                return;
             }
 
             throw new ArgumentException("Recipe not found.");
+        }
+
+        public async Task<IEnumerable<string>> GetSearchSuggestions(string query, int amount)
+        {
+            return await _recipeRepository.GetSearchSuggestions(query, amount);
         }
     }
 }

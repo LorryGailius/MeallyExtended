@@ -6,6 +6,6 @@ namespace MeallyExtended.Business.Repository.Interfaces
     {
         Task<User?> GetUserByEmail(string userEmail);
 
-        Task AddFavoriteRecipe(string userId, Recipe recipe);
+        Task AddFavoriteRecipe(string userEmail, Recipe recipe);
     }
 }

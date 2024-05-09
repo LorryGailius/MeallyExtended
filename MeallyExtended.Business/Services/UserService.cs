@@ -1,9 +1,10 @@
-﻿using MeallyExtended.Business.Repository.Interfaces;
+﻿using MeallyExtended.Business.Interfaces;
+using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.DataModels.Entities;
 
 namespace MeallyExtended.Business.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
 
@@ -17,9 +18,9 @@ namespace MeallyExtended.Business.Services
             return await _userRepository.GetUserByEmail(userEmail);
         }
 
-        public async Task AddFavoriteRecipe(string userId, Recipe recipe)
+        public async Task AddFavoriteRecipe(string userEmail, Recipe recipe)
         {
-            await _userRepository.AddFavoriteRecipe(userId, recipe);
+            await _userRepository.AddFavoriteRecipe(userEmail, recipe);
         }
     }
 }
