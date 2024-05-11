@@ -61,6 +61,19 @@ namespace MeallyExtended.API
                     break;
             }
 
+            // Add CORS services
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+
             var app = builder.Build();
 
             app.MapIdentityApi<User>();
@@ -75,8 +88,10 @@ namespace MeallyExtended.API
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            // Use CORS middleware
+            app.UseCors("AllowAllOrigins");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

@@ -7,12 +7,18 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import ErrorPage from './pages/ErrorPage.tsx';
+import HomePage from './pages/HomePage.tsx';
+import RecipePage from './pages/RecipePage.tsx';
 
 const routes = createBrowserRouter([
   {
     // This is the index page
     path: "/",
-    element: <IndexPage />,
+    element: <HomePage />,
+  },
+  {
+    path: "/recipes/:recipe_id",
+    element: <RecipePage />,
   },
   {
     // This is the 404 page
