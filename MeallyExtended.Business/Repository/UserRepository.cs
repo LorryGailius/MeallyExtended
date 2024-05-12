@@ -34,16 +34,8 @@ namespace MeallyExtended.Business.Repository
             }
         }
 
-        public IQueryable<Recipe> avoriteRecipes(string userEmail)
+        public IQueryable<Recipe> GetFavoriteRecipes(string userEmail)
         {
-            //var likedRecipes = await _dbContext.Users
-            //    .Where(x => x.Email == userEmail)
-            //    .Include(x => x.LikedRecipes)
-            //    .Select(x => x.LikedRecipes)
-            //    .FirstOrDefaultAsync();
-
-            // include user, recipeLikes and categories and select likedRecipes query
-
             var likedRecipes = _dbContext.Users
                 .Where(x => x.Email == userEmail)
                 .Include(x => x.LikedRecipes)
