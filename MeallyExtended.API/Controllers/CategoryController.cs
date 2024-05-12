@@ -14,7 +14,7 @@ namespace MeallyExtended.API.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet("suggestions")]
+        [HttpGet("suggestion")]
         public async Task<IActionResult> GetCategoryQuery(string query, int amount = 5)
         {
             var result = await _categoryService.GetQueryCategories(query, amount);
