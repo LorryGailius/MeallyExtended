@@ -5,6 +5,7 @@ using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Net.Mail;
+using MeallyExtended.Business.Operations;
 using MeallyExtended.Contracts.Requests.Recipe;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace MeallyExtended.Business.Services
             _recipeLikesRepository = recipeLikesRepository;
         }
 
+        [Log]
         public async Task<Recipe> AddRecipe(RecipeDto recipe)
         {
             var validCategories = new List<Category>();
@@ -55,6 +57,7 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
+        [Log]
         public async Task<bool> DeleteRecipe(Guid recipeId, string userEmail)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);
@@ -68,6 +71,7 @@ namespace MeallyExtended.Business.Services
             return false;
         }
 
+        [Log]
         public async Task<Recipe> GetRecipeById(Guid recipeId)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);
@@ -101,6 +105,7 @@ namespace MeallyExtended.Business.Services
             return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
         }
 
+        [Log]
         public async Task<PaginationResult<RecipeDto>> GetBrowseRecipes(int pageNo, int pageSize)
         {
             return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
@@ -123,6 +128,7 @@ namespace MeallyExtended.Business.Services
             };
         }
 
+        [Log]
         public async Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe, string userEmail)
         {
             var recipeEntity = await _recipeRepository.GetRecipeById(recipe.Id);
