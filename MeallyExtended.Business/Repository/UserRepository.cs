@@ -17,7 +17,7 @@ namespace MeallyExtended.Business.Repository
 
         public async Task<User?> GetUserByEmail(string userEmail)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
+            return await _dbContext.Users.Include(x => x.LikedRecipes).FirstOrDefaultAsync(x => x.Email == userEmail);
         }
 
         public async Task AddFavoriteRecipe(string userEmail, Recipe recipe)

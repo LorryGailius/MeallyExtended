@@ -167,7 +167,8 @@ namespace MeallyExtended.Business.Services
 
             if (recipe is not null)
             {
-                var userRecipes = await _userService.GetFavoriteRecipes(userEmail);
+                var user = await _userService.GetUserByEmail(userEmail);
+                var userRecipes = user.LikedRecipes;
 
                 if (userRecipes.Any(x => x.Id == recipeId))
                 {
