@@ -103,7 +103,6 @@ namespace MeallyExtended.Business.Services
             return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
         }
 
-        [Log]
         public async Task<PaginationResult<RecipeDto>> GetBrowseRecipes(int pageNo, int pageSize)
         {
             return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
@@ -165,6 +164,7 @@ namespace MeallyExtended.Business.Services
             return recipeEntity;
         }
 
+        [Log]
         public async Task LikeRecipe(Guid recipeId, string userEmail)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);

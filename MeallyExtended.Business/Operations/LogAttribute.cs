@@ -13,19 +13,23 @@ public class LogAttribute : OverrideMethodAspect
 
     public override dynamic? OverrideMethod()
     {
-        _logger.LogInformation($"{meta.Target.Method} started.");
+        var userParameter = meta.Target.Method.Parameters.FirstOrDefault(x => x.Name == "userEmail");
+
+        _logger.LogInformation(userParameter is not null
+            ? $"{meta.Target.Method} called by {userParameter.Value} | {DateTime.Now}"
+            : $"{meta.Target.Method} called | {DateTime.Now}");
 
         try
         {
             var result = meta.Proceed();
 
-            _logger.LogInformation($"{meta.Target.Method} succeeded.");
+            _logger.LogInformation($"{meta.Target.Method} succeeded | {DateTime.Now}");
 
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogInformation($"{meta.Target.Method} failed: {e.Message}.");
+            _logger.LogInformation($"{meta.Target.Method} failed: {e.Message} | {DateTime.Now}");
 
             throw;
         }
