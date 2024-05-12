@@ -18,13 +18,13 @@ namespace MeallyExtended.API.Controllers
         }
 
         [HttpGet("favorites")]
-        public async Task<IActionResult> GetFavoriteRecipes()
+        public async Task<IActionResult> GetFavoriteRecipes(int pageNo = 1, int pageSize = 10)
         {
             var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
 
-            var result = await _userService.GetFavoriteRecipes(userEmail);
+            var result = await _userService.GetFavoriteRecipes(userEmail, pageNo, pageSize);
 
-            return Ok(result.Select(MeallyMapper.RecipeToDto));
+            return Ok(result);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace MeallyExtended.Business.Repository
             }
         }
 
-        public async Task<List<Recipe>> GetFavoriteRecipes(string userEmail)
+        public IQueryable<Recipe> avoriteRecipes(string userEmail)
         {
             //var likedRecipes = await _dbContext.Users
             //    .Where(x => x.Email == userEmail)
@@ -42,17 +42,17 @@ namespace MeallyExtended.Business.Repository
             //    .Select(x => x.LikedRecipes)
             //    .FirstOrDefaultAsync();
 
-            // include user, recipeLikes and categories
+            // include user, recipeLikes and categories and select likedRecipes query
 
-            var likedRecipes = await _dbContext.Users
+            var likedRecipes = _dbContext.Users
                 .Where(x => x.Email == userEmail)
                 .Include(x => x.LikedRecipes)
                 .ThenInclude(x => x.Categories)
                 .Include(x => x.LikedRecipes)
                 .ThenInclude(x => x.RecipeLikes)
-                .FirstOrDefaultAsync();
+                .SelectMany(x => x.LikedRecipes);
 
-            return likedRecipes?.LikedRecipes.ToList();
+            return likedRecipes;
         }
 
         public async Task RemoveFavoriteRecipe(string userEmail, Recipe recipe)
