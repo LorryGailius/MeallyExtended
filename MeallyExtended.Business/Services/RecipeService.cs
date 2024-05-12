@@ -84,18 +84,26 @@ namespace MeallyExtended.Business.Services
 
         public async Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string? query, List<string>? categories, int pageNo = 1, int pageSize = 10)
         {
-            if (categories.Count != 0 && !string.IsNullOrEmpty(query) && !string.IsNullOrWhiteSpace(query))
+            if (!string.IsNullOrWhiteSpace(query))
             {
-                return await GetPaginationResult(_recipeRepository.GetRecipeByQuery(query, categories), pageNo, pageSize);
+                if (categories.Count != 0)
+                {
+                    return await GetPaginationResult(_recipeRepository.GetRecipeByQuery(query, categories), pageNo, pageSize);
+                }
 
-            }
-
-            if (categories.Count == 0 || categories is null)
-            {
                 return await GetPaginationResult(_recipeRepository.GetRecipeByTitle(query), pageNo, pageSize);
             }
 
-            return await GetPaginationResult(_recipeRepository.GetRecipesByCategory(categories), pageNo, pageSize);
+            if (categories.Count != 0)
+            {
+                return await GetPaginationResult(_recipeRepository.GetRecipesByCategory(categories), pageNo, pageSize);
+            }
+            return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
+        }
+
+        public async Task<PaginationResult<RecipeDto>> GetBrowseRecipes(int pageNo, int pageSize)
+        {
+            return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
         }
 
         private async Task<PaginationResult<RecipeDto>> GetPaginationResult(IQueryable<Recipe> recipeQuery, int pageNo, int pageSize)
@@ -115,11 +123,16 @@ namespace MeallyExtended.Business.Services
             };
         }
 
-        public async Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe)
+        public async Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe, string userEmail)
         {
             var recipeEntity = await _recipeRepository.GetRecipeById(recipe.Id);
 
             if (recipeEntity is null)
+            {
+                return null;
+            }
+
+            if (recipeEntity.User.Email != userEmail)
             {
                 return null;
             }

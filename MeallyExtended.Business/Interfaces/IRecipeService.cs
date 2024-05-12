@@ -10,7 +10,8 @@ namespace MeallyExtended.Business.Interfaces
         Task<bool> DeleteRecipe(Guid recipeId, string userEmail);
         Task<Recipe> GetRecipeById(Guid recipeId);
         Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string query, List<string> categories, int pageNo, int pageSize);
-        Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe);
+        Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe, string userEmail);
+        Task<PaginationResult<RecipeDto>> GetBrowseRecipes(int pageNo, int pageSize);
         Task LikeRecipe(Guid recipeId, string userEmail);
         Task<IEnumerable<string>> GetSearchSuggestions(string query, int amount);
     }

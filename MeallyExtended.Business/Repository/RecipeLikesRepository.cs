@@ -67,5 +67,11 @@ namespace MeallyExtended.Business.Repository
         {
             return await _dbContext.RecipeLikes.FirstOrDefaultAsync(x => x.RecipeId == recipeId);
         }
+
+        public IQueryable<RecipeLikes> GetRecipeLikes()
+        {
+            return _dbContext.RecipeLikes.Include(x => x.Recipe).Include(x => x.Recipe.User)
+                .Include(x => x.Recipe.Categories);
+        }
     }
 }

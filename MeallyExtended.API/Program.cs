@@ -39,6 +39,21 @@ namespace MeallyExtended.API
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
+            var popularityConfig = builder.Configuration["PopularityConfig"];
+
+            switch (popularityConfig)
+            {
+                case "ByClicks":
+                    builder.Services.AddScoped<IPopularityService, ClickPopularityService>();
+                    break;
+                case "ByLikes":
+                    builder.Services.AddScoped<IPopularityService, LikePopularityService>();
+                    break;
+                default:
+                    builder.Services.AddScoped<IPopularityService, LikePopularityService>();
+                    break;
+            }
+
             var app = builder.Build();
 
             app.MapIdentityApi<User>();

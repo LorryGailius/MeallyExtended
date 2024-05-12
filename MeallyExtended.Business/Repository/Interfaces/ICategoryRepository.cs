@@ -9,6 +9,7 @@ namespace MeallyExtended.Business.Repository.Interfaces
         public Task<Category?> GetCategoryByName(string name);
         public Task<Category?> AddCategory(Category category);
         public Task<Category?> UpdateCategory(Category category);
+        Task<IEnumerable<string>> GetQueryCategories(string query, int amount);
         public Task<bool> DeleteCategory(Guid categoryId);
     }
 }
