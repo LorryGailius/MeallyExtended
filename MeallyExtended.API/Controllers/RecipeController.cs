@@ -1,13 +1,10 @@
 ﻿using System.Security.Claims;
 using MeallyExtended.Business.Interfaces;
 using MeallyExtended.Business.Mappers;
-using MeallyExtended.Business.Operations;
 using MeallyExtended.Contracts.Dto;
 using MeallyExtended.Contracts.Requests.Recipe;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeallyExtended.API.Controllers

@@ -3,8 +3,6 @@ using MeallyExtended.Business.Mappers;
 using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Net.Mail;
 using MeallyExtended.Business.Operations;
 using MeallyExtended.Contracts.Requests.Recipe;
 using Microsoft.EntityFrameworkCore;

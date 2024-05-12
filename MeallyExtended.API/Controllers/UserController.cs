@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using MeallyExtended.Business.Interfaces;
-using MeallyExtended.Business.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

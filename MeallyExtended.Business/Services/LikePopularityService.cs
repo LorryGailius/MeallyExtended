@@ -1,6 +1,5 @@
 ﻿using MeallyExtended.Business.Interfaces;
 using MeallyExtended.Business.Repository.Interfaces;
-using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore;
 
