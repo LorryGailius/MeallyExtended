@@ -6,6 +6,7 @@ namespace MeallyExtended.Business.Repository.Interfaces
     {
         public Task<IEnumerable<Review>> GetReviewsByRecipeId(Guid recipeId);
         public Task<IEnumerable<Review>> GetReviewsByUserId(string userId);
+        public Task<IEnumerable<Review>> GetLimitedReviews(Guid recipeId, int limit, int skip);
         public Task<Review?> GetReviewById(Guid reviewId);
         public Task<Review?> AddReview(Review review);
         public Task<Review?> UpdateReview(Review review);

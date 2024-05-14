@@ -39,18 +39,12 @@ public class ReviewService : IReviewService
     public async Task<bool> DeleteReview(Guid reviewId, string userEmail)
     {
         Review? reviewToDelete = await _reviewRepository.GetReviewById(reviewId);
-        User? user = await _userRepository.GetUserByEmail(userEmail);
-        if (user == null)
-        {
-            throw new ArgumentException($"No such user found with email: {userEmail}.");
-        }
-
         if (reviewToDelete == null)
         {
-            throw new ArgumentException($"No such review found, ID: {reviewId}");
+            throw new ArgumentException($"No such review found with ID: {reviewId}.");
         }
 
-        if (user.Id == reviewToDelete.UserId)
+        if (reviewToDelete.User.Email  == userEmail)
         {
             throw new ArgumentException("Can't delete review because provided user is not creator of the review.");
         }
@@ -70,7 +64,7 @@ public class ReviewService : IReviewService
             throw new ArgumentException($"No such recipe found, ID: {recipeId}");
         }
 
-        return (await _reviewRepository.GetReviewsByRecipeId(recipeId)).Skip(skip).Take(limit);
+        return await _reviewRepository.GetLimitedReviews(recipeId, limit, skip);
     }
 
     public async Task<Review?> UpdateReview(UpdateReviewRequest review, string userEmail)

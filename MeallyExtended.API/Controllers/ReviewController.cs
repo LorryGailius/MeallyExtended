@@ -20,7 +20,7 @@ public class ReviewController : ControllerBase
         _reviewService = reviewService;
     }
 
-    [HttpGet]
+    [HttpGet("{recipeId}:guid")]
     public async Task<IActionResult> GetReviews([FromRoute] Guid recipeId, [FromQuery] int limit = 5, [FromQuery] int skip = 0)
     {
         try
