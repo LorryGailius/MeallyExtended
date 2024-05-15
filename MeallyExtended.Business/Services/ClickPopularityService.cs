@@ -17,10 +17,13 @@ public class ClickPopularityService : IPopularityService
     public async Task<IEnumerable<Recipe>> GetPopularRecipes(int amount)
     {
         var popularRecipes = await _recipeLikesRepository.GetRecipeLikes()
-            .OrderByDescending(x => x.ClickCount)
-            .Take(amount)
-            .Select(x => x.Recipe)
-            .ToListAsync();
+           .OrderByDescending(x => x.ClickCount)
+           .Take(amount)
+           .Include(x => x.Recipe.RecipeLikes)
+           .Include(x => x.Recipe.User)
+           .Include(x => x.Recipe.Categories)
+           .Select(x => x.Recipe)
+           .ToListAsync();
 
         return popularRecipes;
     }
