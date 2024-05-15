@@ -9,12 +9,17 @@ import {
 import ErrorPage from './pages/ErrorPage.tsx';
 import HomePage from './pages/HomePage.tsx';
 import RecipePage from './pages/RecipePage.tsx';
+import LoginPage from './pages/LoginPage.tsx';
 
 const routes = createBrowserRouter([
   {
     // This is the index page
     path: "/",
     element: <HomePage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
   {
     path: "/recipes/:recipe_id",
