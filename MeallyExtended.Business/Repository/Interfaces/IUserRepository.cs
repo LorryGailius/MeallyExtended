@@ -6,7 +6,7 @@ namespace MeallyExtended.Business.Repository.Interfaces
     {
         Task<User?> GetUserByEmail(string userEmail);
         Task AddFavoriteRecipe(string userEmail, Recipe recipe);
-        Task<List<Recipe>> GetFavoriteRecipes(string userEmail);
+        IQueryable<Recipe> GetFavoriteRecipes(string userEmail);
         Task RemoveFavoriteRecipe(string userEmail,Recipe recipe);
     }
 }

@@ -17,5 +17,10 @@ namespace MeallyExtended.Business.Services
         {
             return await _categoryRepository.GetCategoryByName(name);
         }
+
+        public async Task<IEnumerable<string>> GetQueryCategories(string query, int amount)
+        {
+            return await _categoryRepository.GetQueryCategories(query, amount);
+        }
     }
 }

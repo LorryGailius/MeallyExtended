@@ -1,6 +1,9 @@
 ﻿using MeallyExtended.Business.Interfaces;
+using MeallyExtended.Business.Mappers;
 using MeallyExtended.Business.Repository.Interfaces;
+using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeallyExtended.Business.Services
 {
@@ -28,9 +31,26 @@ namespace MeallyExtended.Business.Services
             await _userRepository.RemoveFavoriteRecipe(userEmail, recipe);
         }
 
-        public async Task<List<Recipe>> GetFavoriteRecipes(string userEmail)
+        public async Task<PaginationResult<RecipeDto>> GetFavoriteRecipes(string userEmail, int pageNo, int pageSize)
         {
-            return await _userRepository.GetFavoriteRecipes(userEmail);
+            return await GetPaginationResult(_userRepository.GetFavoriteRecipes(userEmail), pageNo, pageSize);
+        }
+
+        private async Task<PaginationResult<RecipeDto>> GetPaginationResult(IQueryable<Recipe> recipeQuery, int pageNo, int pageSize)
+        {
+            var totalRecipes = await recipeQuery.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecipes / (double)pageSize);
+            var recipeResult = await recipeQuery.Skip((pageNo - 1) * pageSize).Take(pageSize)
+                .Include(x => x.User).Include(x => x.RecipeLikes).Include(x => x.Categories).Select(x => MeallyMapper.RecipeToDto(x)).ToListAsync();
+
+            return new PaginationResult<RecipeDto>
+            {
+                PageNo = pageNo,
+                PageSize = pageSize,
+                TotalPages = totalPages,
+                Data = recipeResult,
+                TotalCount = totalRecipes
+            };
         }
     }
 }
