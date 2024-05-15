@@ -19,6 +19,15 @@ namespace MeallyExtended.Business.Repository
             return await _dbContext.Category.ToListAsync();
         }
 
+        public async Task<IEnumerable<string>> GetQueryCategories(string query, int amount)
+        {
+            return await _dbContext.Category
+                .Where(c => c.Name.Contains(query))
+                .Take(amount)
+                .Select(c => c.Name)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Category>> GetCategoriesByRecipeId(Guid recipeId)
         {
             return await _dbContext.Category

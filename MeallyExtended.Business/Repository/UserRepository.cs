@@ -1,5 +1,4 @@
-﻿using System.Xml.Schema;
-using MeallyExtended.Business.Data;
+﻿using MeallyExtended.Business.Data;
 using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.DataModels.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,7 @@ namespace MeallyExtended.Business.Repository
 
         public async Task<User?> GetUserByEmail(string userEmail)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
+            return await _dbContext.Users.Include(x => x.LikedRecipes).FirstOrDefaultAsync(x => x.Email == userEmail);
         }
 
         public async Task AddFavoriteRecipe(string userEmail, Recipe recipe)
@@ -34,14 +33,17 @@ namespace MeallyExtended.Business.Repository
             }
         }
 
-        public async Task<List<Recipe>> GetFavoriteRecipes(string userEmail)
+        public IQueryable<Recipe> GetFavoriteRecipes(string userEmail)
         {
-            var user = await _dbContext.Users
+            var likedRecipes = _dbContext.Users
                 .Where(x => x.Email == userEmail)
                 .Include(x => x.LikedRecipes)
-                .FirstOrDefaultAsync();
+                .ThenInclude(x => x.Categories)
+                .Include(x => x.LikedRecipes)
+                .ThenInclude(x => x.RecipeLikes)
+                .SelectMany(x => x.LikedRecipes);
 
-            return user?.LikedRecipes.ToList() ?? new List<Recipe>();
+            return likedRecipes;
         }
 
         public async Task RemoveFavoriteRecipe(string userEmail, Recipe recipe)

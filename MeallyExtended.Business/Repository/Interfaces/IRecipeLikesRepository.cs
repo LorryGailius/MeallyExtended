@@ -9,5 +9,6 @@ namespace MeallyExtended.Business.Repository.Interfaces
         Task AddClick(Guid recipeId);
         Task ClearClicks(Guid recipeId);
         Task<RecipeLikes?> GetRecipeLikesByRecipeId(Guid recipeId);
+        IQueryable<RecipeLikes> GetRecipeLikes();
     }
 }

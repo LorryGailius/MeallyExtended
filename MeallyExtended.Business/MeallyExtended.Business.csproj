@@ -10,11 +10,12 @@
     <Folder Include="Core\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Operations\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Metalama.Extensions.DependencyInjection" Version="2024.1.18" />
+    <PackageReference Include="Metalama.Framework" Version="2024.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
   </ItemGroup>

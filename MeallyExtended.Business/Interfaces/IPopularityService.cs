@@ -1,9 +1,9 @@
-﻿using MeallyExtended.Contracts.Dto;
+﻿using MeallyExtended.DataModels.Entities;
 
 namespace MeallyExtended.Business.Interfaces
 {
     public interface IPopularityService
     {
-        Task<IEnumerable<RecipeDto>> GetPopularRecipes();
+        Task<IEnumerable<Recipe>> GetPopularRecipes(int amount);
     }
 }
