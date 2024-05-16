@@ -20,6 +20,7 @@ public class Recipe
         set => Ingredients = JsonSerializer.Deserialize<Ingredient[]>(value);
     }
 
+    public string? ImageUrl { get; set; }
     public string? Description { get; set; }
     public double Duration { get; set; } 
     public required string Instructions { get; set; }

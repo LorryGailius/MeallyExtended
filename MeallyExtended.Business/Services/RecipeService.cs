@@ -167,6 +167,7 @@ namespace MeallyExtended.Business.Services
             recipeEntity.Duration = recipe.Duration;
             recipeEntity.Instructions = recipe.Instructions;
             recipeEntity.Categories = validCategories;
+            recipeEntity.ImageUrl = recipe.ImageUrl;
 
             await _recipeRepository.UpdateRecipe(recipeEntity);
 

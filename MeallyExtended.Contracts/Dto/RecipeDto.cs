@@ -6,6 +6,7 @@
         public required string Title { get; set; }
         public List<Ingredient> Ingredients { get; set; } = [];
         public string? Description { get; set; }
+        public string? ImageUrl { get; set; }
         public double Duration { get; set; }
         public required string Instructions { get; set; }
         public List<CategoryDto> Categories { get; set; } = [];
