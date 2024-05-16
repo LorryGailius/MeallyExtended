@@ -56,17 +56,21 @@ namespace MeallyExtended.Business.Services
         }
 
         [Log]
-        public async Task<bool> DeleteRecipe(Guid recipeId, string userEmail)
+        public async Task DeleteRecipe(Guid recipeId, string userEmail)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);
 
-            if (recipe is not null && recipe.User.Email == userEmail)
+            if (recipe is null)
             {
-                await _recipeRepository.DeleteRecipe(recipeId);
-                return true;
+                throw new ArgumentException("Recipe not found.");
             }
 
-            return false;
+            if (recipe.User.Email != userEmail)
+            {
+                throw new ArgumentException("User is not the creator of the recipe.");
+            }
+
+            await _recipeRepository.DeleteRecipe(recipeId);
         }
 
         [Log]
@@ -103,7 +107,6 @@ namespace MeallyExtended.Business.Services
             return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
         }
 
-        [Log]
         public async Task<PaginationResult<RecipeDto>> GetBrowseRecipes(int pageNo, int pageSize)
         {
             return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
@@ -133,12 +136,17 @@ namespace MeallyExtended.Business.Services
 
             if (recipeEntity is null)
             {
-                return null;
+                throw new ArgumentException("Recipe not found.");
             }
 
             if (recipeEntity.User.Email != userEmail)
             {
-                return null;
+                throw new ArgumentException("User is not the creator of the recipe.");
+            }
+
+            if (!recipeEntity.Version.SequenceEqual(recipe.Version))
+            {
+                throw new DbUpdateConcurrencyException("Recipe has been previously updated.");
             }
 
             var validCategories = new List<Category>();
@@ -159,12 +167,14 @@ namespace MeallyExtended.Business.Services
             recipeEntity.Duration = recipe.Duration;
             recipeEntity.Instructions = recipe.Instructions;
             recipeEntity.Categories = validCategories;
+            recipeEntity.ImageUrl = recipe.ImageUrl;
 
             await _recipeRepository.UpdateRecipe(recipeEntity);
 
             return recipeEntity;
         }
 
+        [Log]
         public async Task LikeRecipe(Guid recipeId, string userEmail)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);

@@ -52,7 +52,10 @@ namespace MeallyExtended.Business.Mappers
                 Id = review.Id,
                 UserEmail = review.User.Email,
                 Text = review.Text,
-                CreatedDate = review.CreatedDate
+                CreatedDate = review.CreatedDate,
+                RecipeId = review.RecipeId,
+                ModifiedDate = review.ModifiedDate,
+                Version = review.Version,
             };
         }
 
@@ -62,18 +65,19 @@ namespace MeallyExtended.Business.Mappers
             {
                 Id = reviewDto.Id,
                 Text = reviewDto.Text,
-                CreatedDate = reviewDto.CreatedDate
+                RecipeId = reviewDto.RecipeId,
+                CreatedDate = reviewDto.CreatedDate,
             };
         }
 
-        public static ReviewDto CreateReviewRequestToReviewDto(CreateReviewRequest createReviewRequest)
+        public static ReviewDto CreateReviewRequestToReviewDto(CreateReviewRequest createReviewRequest, string userEmail)
         {
             return new ReviewDto
             {
                 RecipeId = createReviewRequest.RecipeId,
-                UserEmail = createReviewRequest.UserEmail,
+                UserEmail = userEmail,
                 Text = createReviewRequest.Text,
-                CreatedDate = createReviewRequest.CreatedDate
+                CreatedDate = DateTime.Now
             };
         }
 
@@ -81,10 +85,8 @@ namespace MeallyExtended.Business.Mappers
         {
             return new ReviewDto
             {
-                RecipeId = updateReviewRequest.RecipeId,
-                UserEmail = updateReviewRequest.UserEmail,
+                Id = updateReviewRequest.Id,
                 Text = updateReviewRequest.Text,
-                CreatedDate = updateReviewRequest.CreatedDate
             };
         }
         #endregion Review
@@ -103,7 +105,9 @@ namespace MeallyExtended.Business.Mappers
                 Duration = recipe.Duration,
                 Categories = recipe.Categories.Select(CategoryToDto).ToList(),
                 Reviews = recipe.Reviews.Select(ReviewToDto).ToList(),
-                UserEmail = recipe.User.Email
+                UserEmail = recipe.User.Email,
+                Version = recipe.Version,
+                ImageUrl = recipe.ImageUrl
             };
         }
 
@@ -119,7 +123,8 @@ namespace MeallyExtended.Business.Mappers
                 Ingredients = recipeDto.Ingredients.ToArray(),
                 Instructions = recipeDto.Instructions,
                 Duration = recipeDto.Duration,
-                Categories = categories
+                Categories = categories,
+                ImageUrl = recipeDto.ImageUrl
             };
         }
 
@@ -133,7 +138,8 @@ namespace MeallyExtended.Business.Mappers
                 Ingredients = createRecipeRequest.Ingredients,
                 Instructions = createRecipeRequest.Instructions,
                 Duration = createRecipeRequest.Duration,
-                Categories = createRecipeRequest.Categories.Select(c => new CategoryDto { Name = c }).ToList()
+                Categories = createRecipeRequest.Categories.Select(c => new CategoryDto { Name = c }).ToList(),
+                ImageUrl = createRecipeRequest.ImageUrl
             };
         }
 
@@ -147,7 +153,8 @@ namespace MeallyExtended.Business.Mappers
                 Ingredients = updateRecipeRequest.Ingredients,
                 Instructions = updateRecipeRequest.Instructions,
                 Duration = updateRecipeRequest.Duration,
-                Categories = updateRecipeRequest.Categories.Select(c => new CategoryDto { Name = c }).ToList()
+                Categories = updateRecipeRequest.Categories.Select(c => new CategoryDto { Name = c }).ToList(),
+                ImageUrl = updateRecipeRequest.ImageUrl
             };
         }
         #endregion Recipe

@@ -7,7 +7,7 @@ namespace MeallyExtended.Business.Interfaces
     public interface IRecipeService
     {
         Task<Recipe> AddRecipe(RecipeDto recipe);
-        Task<bool> DeleteRecipe(Guid recipeId, string userEmail);
+        Task DeleteRecipe(Guid recipeId, string userEmail);
         Task<Recipe> GetRecipeById(Guid recipeId);
         Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string query, List<string> categories, int pageNo, int pageSize);
         Task<Recipe> UpdateRecipe(UpdateRecipeRequest recipe, string userEmail);

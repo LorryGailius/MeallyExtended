@@ -19,8 +19,8 @@ public class ClickPopularityService : IPopularityService
         var popularRecipes = await _recipeLikesRepository.GetRecipeLikes()
             .OrderByDescending(x => x.ClickCount)
             .Take(amount)
-            .Include(x => x.Recipe.RecipeLikes)
             .Include(x => x.Recipe.User)
+            .Include(x => x.Recipe.RecipeLikes)
             .Include(x => x.Recipe.Categories)
             .Select(x => x.Recipe)
             .ToListAsync();
