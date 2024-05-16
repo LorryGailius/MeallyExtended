@@ -11,5 +11,6 @@ namespace MeallyExtended.Contracts.Requests.Recipe
         public string Instructions { get; set; } = null!;
         public double Duration { get; set; }
         public required IList<string> Categories { get; set; }
+        public byte[] Version { get; set; }
     }
 }

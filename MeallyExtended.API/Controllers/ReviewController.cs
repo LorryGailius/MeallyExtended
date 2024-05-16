@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using System.Data;
+using Azure.Core;
 using MeallyExtended.Business.Interfaces;
 using MeallyExtended.Business.Mappers;
 using MeallyExtended.Contracts.Dto;
@@ -20,18 +21,23 @@ public class ReviewController : ControllerBase
         _reviewService = reviewService;
     }
 
-    [HttpGet("{recipeId}:guid")]
+    /// <summary>
+    /// Get reviews for specific recipe. Supports pooling of recipes 
+    /// </summary>
+    /// <param name="recipeId"></param>
+    /// <param name="limit"></param>
+    /// <param name="skip"></param>
+    /// <Returns>List of reviews</Returns>
+    [HttpGet("{recipeId:guid}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     public async Task<IActionResult> GetReviews([FromRoute] Guid recipeId, [FromQuery] int limit = 5, [FromQuery] int skip = 0)
     {
         try
         {
-            var reviews =  await _reviewService.GetLimitedReviews(recipeId, limit, skip);
+            var reviews = await _reviewService.GetLimitedReviews(recipeId, limit, skip);
 
-            ICollection<ReviewDto> result = new List<ReviewDto>();
-            foreach(var review in reviews)
-            {
-                result.Add(MeallyMapper.ReviewToDto(review));
-            }
+            ICollection<ReviewDto> result = reviews.Select(MeallyMapper.ReviewToDto).ToList();
 
             return Ok(result);
         }
@@ -41,9 +47,16 @@ public class ReviewController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Create a review for recipe. Needs to be authorized 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest request) 
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest request)
     {
         try
         {
@@ -60,8 +73,16 @@ public class ReviewController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Update review for recipe. Needs to be authorized
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>Updated review</returns>
     [HttpPut]
     [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(409)]
     public async Task<IActionResult> UpdateReview([FromBody] UpdateReviewRequest request)
     {
         try
@@ -71,15 +92,26 @@ public class ReviewController : ControllerBase
             var result = await _reviewService.UpdateReview(request, userEmail);
             return Ok(MeallyMapper.ReviewToDto(result));
         }
+        catch (DBConcurrencyException)
+        {
+            return Conflict("Review has already been updated. Please refresh and try again.");
+        }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
 
+    /// <summary>
+    /// Delete review for recipe. Needs to be authorized and review creator
+    /// </summary>
+    /// <param name="reviewId"></param>
+    /// <returns></returns>
     [HttpDelete]
     [Authorize]
-    public async Task<IActionResult> DeleteReview([FromHeader] Guid reviewId) 
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public async Task<IActionResult> DeleteReview([FromHeader] Guid reviewId)
     {
         try
         {

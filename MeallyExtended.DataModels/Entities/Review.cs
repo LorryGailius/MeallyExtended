@@ -1,4 +1,6 @@
-﻿namespace MeallyExtended.DataModels.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MeallyExtended.DataModels.Entities;
 
 public class Review
 {
@@ -10,4 +12,6 @@ public class Review
     public DateTime ModifiedDate { get; set;}
     public Guid RecipeId { get; set; }
     public Recipe Recipe { get; set; } = null!;
+    [Timestamp]
+    public byte[] Version { get; set; }
 }

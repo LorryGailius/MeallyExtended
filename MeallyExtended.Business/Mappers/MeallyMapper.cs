@@ -52,7 +52,8 @@ namespace MeallyExtended.Business.Mappers
                 Id = review.Id,
                 UserEmail = review.User.Email,
                 Text = review.Text,
-                CreatedDate = review.CreatedDate
+                CreatedDate = review.CreatedDate,
+                Version = review.Version
             };
         }
 
@@ -63,7 +64,7 @@ namespace MeallyExtended.Business.Mappers
                 Id = reviewDto.Id,
                 Text = reviewDto.Text,
                 RecipeId = reviewDto.RecipeId,
-                CreatedDate = reviewDto.CreatedDate
+                CreatedDate = reviewDto.CreatedDate,
             };
         }
 
@@ -103,7 +104,8 @@ namespace MeallyExtended.Business.Mappers
                 Duration = recipe.Duration,
                 Categories = recipe.Categories.Select(CategoryToDto).ToList(),
                 Reviews = recipe.Reviews.Select(ReviewToDto).ToList(),
-                UserEmail = recipe.User.Email
+                UserEmail = recipe.User.Email,
+                Version = recipe.Version
             };
         }
 

@@ -1,4 +1,5 @@
-﻿using MeallyExtended.Business.Interfaces;
+﻿using System.Data;
+using MeallyExtended.Business.Interfaces;
 using MeallyExtended.Business.Mappers;
 using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.Contracts.Dto;
@@ -69,8 +70,9 @@ public class ReviewService : IReviewService
 
     public async Task<Review?> UpdateReview(UpdateReviewRequest review, string userEmail)
     {
-        Review? reviewToUpdate = await _reviewRepository.GetReviewById(review.Id);
-        User? user = await _userRepository.GetUserByEmail(userEmail);
+        var reviewToUpdate = await _reviewRepository.GetReviewById(review.Id);
+        var user = await _userRepository.GetUserByEmail(userEmail);
+
         if (user == null)
         {
             throw new ArgumentException($"No such user found with email: {userEmail}.");
@@ -84,6 +86,11 @@ public class ReviewService : IReviewService
         if (user.Id == reviewToUpdate.UserId)
         {
             throw new ArgumentException("Can't delete review because provided user is not creator of the review.");
+        }
+
+        if (!review.Version.SequenceEqual(reviewToUpdate.Version))
+        {
+            throw new DBConcurrencyException("Review has already been updated.");
         }
 
         reviewToUpdate.Text = review.Text;

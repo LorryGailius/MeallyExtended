@@ -1,3 +1,4 @@
+using System.Reflection;
 using MeallyExtended.Business.Data;
 using MeallyExtended.Business.Interfaces;
 using MeallyExtended.Business.Repository.Interfaces;
@@ -20,7 +21,12 @@ namespace MeallyExtended.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+                {
+                    var filename = Assembly.GetExecutingAssembly().GetName().Name + ".xml";
+                    var filepath = Path.Combine(AppContext.BaseDirectory, filename);
+                    options.IncludeXmlComments(filepath);
+                });
 
             builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
             builder.Services.AddAuthorizationBuilder();
@@ -63,6 +69,7 @@ namespace MeallyExtended.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
             }
 
             app.UseHttpsRedirection();

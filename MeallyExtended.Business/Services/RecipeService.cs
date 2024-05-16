@@ -56,17 +56,21 @@ namespace MeallyExtended.Business.Services
         }
 
         [Log]
-        public async Task<bool> DeleteRecipe(Guid recipeId, string userEmail)
+        public async Task DeleteRecipe(Guid recipeId, string userEmail)
         {
             var recipe = await _recipeRepository.GetRecipeById(recipeId);
 
-            if (recipe is not null && recipe.User.Email == userEmail)
+            if (recipe is null)
             {
-                await _recipeRepository.DeleteRecipe(recipeId);
-                return true;
+                throw new ArgumentException("Recipe not found.");
             }
 
-            return false;
+            if (recipe.User.Email != userEmail)
+            {
+                throw new ArgumentException("User is not the creator of the recipe.");
+            }
+
+            await _recipeRepository.DeleteRecipe(recipeId);
         }
 
         [Log]
@@ -132,12 +136,17 @@ namespace MeallyExtended.Business.Services
 
             if (recipeEntity is null)
             {
-                return null;
+                throw new ArgumentException("Recipe not found.");
             }
 
             if (recipeEntity.User.Email != userEmail)
             {
-                return null;
+                throw new ArgumentException("User is not the creator of the recipe.");
+            }
+
+            if (!recipeEntity.Version.SequenceEqual(recipe.Version))
+            {
+                throw new DbUpdateConcurrencyException("Recipe has been previously updated.");
             }
 
             var validCategories = new List<Category>();

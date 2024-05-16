@@ -12,5 +12,6 @@
         public List<ReviewDto> Reviews { get; set; } = [];
         public int LikesCount { get; set; }
         public string UserEmail { get; set; } = null!;
+        public byte[] Version { get; set; }
     }
 }
