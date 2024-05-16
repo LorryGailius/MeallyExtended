@@ -53,6 +53,8 @@ namespace MeallyExtended.Business.Mappers
                 UserEmail = review.User.Email,
                 Text = review.Text,
                 CreatedDate = review.CreatedDate,
+                RecipeId = review.RecipeId,
+                ModifiedDate = review.ModifiedDate,
                 Version = review.Version
             };
         }
@@ -75,7 +77,7 @@ namespace MeallyExtended.Business.Mappers
                 RecipeId = createReviewRequest.RecipeId,
                 UserEmail = userEmail,
                 Text = createReviewRequest.Text,
-                CreatedDate = createReviewRequest.CreatedDate
+                CreatedDate = DateTime.Now
             };
         }
 
@@ -84,7 +86,6 @@ namespace MeallyExtended.Business.Mappers
             return new ReviewDto
             {
                 Id = updateReviewRequest.Id,
-                RecipeId = updateReviewRequest.RecipeId,
                 Text = updateReviewRequest.Text,
             };
         }

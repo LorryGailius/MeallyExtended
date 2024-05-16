@@ -83,7 +83,7 @@ public class ReviewService : IReviewService
             throw new ArgumentException($"No such review found, ID: {review.Id}");
         }
 
-        if (user.Id == reviewToUpdate.UserId)
+        if (user.Id != reviewToUpdate.UserId)
         {
             throw new ArgumentException("Can't delete review because provided user is not creator of the review.");
         }
@@ -94,7 +94,7 @@ public class ReviewService : IReviewService
         }
 
         reviewToUpdate.Text = review.Text;
-        reviewToUpdate.ModifiedDate = DateTime.UtcNow;
+        reviewToUpdate.ModifiedDate = DateTime.Now;
 
         return await _reviewRepository.UpdateReview(reviewToUpdate);
     }

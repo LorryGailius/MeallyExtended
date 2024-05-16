@@ -44,6 +44,7 @@ namespace MeallyExtended.API
             builder.Services.AddScoped<IRecipeService, RecipeService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
 
             var popularityConfig = builder.Configuration["PopularityConfig"];
 

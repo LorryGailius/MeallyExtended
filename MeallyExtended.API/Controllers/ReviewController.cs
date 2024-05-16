@@ -58,6 +58,11 @@ public class ReviewController : ControllerBase
     [ProducesResponseType(400)]
     public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest request)
     {
+        if (string.IsNullOrEmpty(request.Text) || string.IsNullOrWhiteSpace(request.Text))
+        {
+            BadRequest("Review cannot be empty");
+        }
+
         try
         {
             var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;

@@ -9,7 +9,7 @@ public class Review
     public User User { get; set; } = null!;
     public required string Text { get; set; }
     public DateTime CreatedDate { get; set; }
-    public DateTime ModifiedDate { get; set;}
+    public DateTime? ModifiedDate { get; set;}
     public Guid RecipeId { get; set; }
     public Recipe Recipe { get; set; } = null!;
     [Timestamp]
