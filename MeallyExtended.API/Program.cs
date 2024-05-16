@@ -46,6 +46,18 @@ namespace MeallyExtended.API
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
 
+            // Add CORS services
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
             var popularityConfig = builder.Configuration["PopularityConfig"];
 
             switch (popularityConfig)
@@ -60,19 +72,6 @@ namespace MeallyExtended.API
                     builder.Services.AddScoped<IPopularityService, LikePopularityService>();
                     break;
             }
-
-            // Add CORS services
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigins",
-                    builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
-            });
 
             var app = builder.Build();
 

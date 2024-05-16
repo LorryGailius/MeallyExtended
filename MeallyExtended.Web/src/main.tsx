@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import IndexPage from "./pages/IndexPage.tsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage.tsx";
@@ -10,6 +9,8 @@ import RegisterForm from "./pages/Registration.tsx";
 import RecipeLikePage from "./pages/RecipeLikePage.tsx";
 import SearchRecipesComponent from "./pages/RecipeSearchPage.tsx";
 import RecipeSuggestionComponent from "./pages/RecipeSuggestionPage.tsx";
+import HomePage from "./pages/HomePage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
 
 const routes = createBrowserRouter([
   {
@@ -19,11 +20,15 @@ const routes = createBrowserRouter([
   },
   {
     path: "/recipes",
-    element: <IndexPage />,
+    element: <HomePage />,
   },
   {
     path: "/recipeForm",
     element: <RecipeForm />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
   {
     path: "/recipes/:recipe_id",
