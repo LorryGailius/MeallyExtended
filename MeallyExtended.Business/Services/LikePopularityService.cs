@@ -20,6 +20,9 @@ namespace MeallyExtended.Business.Services
             var popularRecipes = await _recipeLikesRepository.GetRecipeLikes()
                 .OrderByDescending(x => x.LikeCount)
                 .Take(amount)
+                .Include(x => x.Recipe.User)
+                .Include(x => x.Recipe.RecipeLikes)
+                .Include(x => x.Recipe.Categories)
                 .Select(x => x.Recipe)
                 .ToListAsync();
 
