@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import apiBaseUrl from '../../API/apiConfig.ts';
+import { useState } from "react";
+import apiBaseUrl from "../../API/apiConfig.ts";
 
 export function useAuthenticate() {
   const [loading, setLoading] = useState(false);
@@ -10,27 +10,29 @@ export function useAuthenticate() {
     setError(null);
 
     try {
-      const response = await fetch(`${apiBaseUrl}/login?useCookies=true&useSessionCookies=true`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: userEmail, password: userPassword })
-      });
-
-      console.log(response);
+      const response = await fetch(
+        `${apiBaseUrl}/login?useCookies=true&useSessionCookies=true`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: userEmail, password: userPassword }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Request failed');
+        throw new Error("Request failed");
       }
 
       const text = await response.text();
       const data = text ? JSON.parse(text) : {};
 
       if (!data) {
-        throw new Error('No data returned from server');
+        throw new Error("No data returned from server");
       }
 
+      localStorage.setItem("userEmail", userEmail);
     } catch (err: any) {
       console.error(err);
       setError(err.message);
