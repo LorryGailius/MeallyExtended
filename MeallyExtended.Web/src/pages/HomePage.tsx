@@ -13,7 +13,7 @@ import {
 import { useRecipesPopular } from "@/hooks/useRecipesPopular";
 import { Link } from "react-router-dom";
 
-const IndexPage: React.FC = () => {
+const HomePage: React.FC = () => {
   const {
     browseRecipes,
     loading: browseLoading,
@@ -170,4 +170,4 @@ const IndexPage: React.FC = () => {
   );
 };
 
-export default IndexPage;
+export default HomePage;
