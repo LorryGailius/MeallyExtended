@@ -6,5 +6,6 @@ namespace MeallyExtended.Business.Interfaces
     {
         Task<Category?> GetCategoryByName(string name);
         Task<IEnumerable<string>> GetQueryCategories(string query, int amount);
+        Task<IEnumerable<Category>> GetCategories();
     }
 }
