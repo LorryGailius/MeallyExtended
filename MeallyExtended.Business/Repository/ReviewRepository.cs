@@ -41,7 +41,7 @@ namespace MeallyExtended.Business.Repository
 
         public async Task<Review?> GetReviewById(Guid reviewId)
         {
-            var review = await _dbContext.Review.FindAsync(reviewId);
+            var review = await _dbContext.Review.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == reviewId);
             if (review == null)
             {
                 return null;
