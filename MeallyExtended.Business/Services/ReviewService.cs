@@ -45,7 +45,7 @@ public class ReviewService : IReviewService
             throw new ArgumentException($"No such review found with ID: {reviewId}.");
         }
 
-        if (reviewToDelete.User.Email  == userEmail)
+        if (reviewToDelete.User.Email  != userEmail)
         {
             throw new ArgumentException("Can't delete review because provided user is not creator of the review.");
         }
