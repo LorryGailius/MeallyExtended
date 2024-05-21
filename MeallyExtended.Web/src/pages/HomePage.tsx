@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/pagination";
 import { useRecipesPopular } from "@/hooks/useRecipesPopular";
 import { Link } from "react-router-dom";
+import Header from "@/components/ui/header";
 
 const HomePage: React.FC = () => {
   const {
@@ -36,18 +37,19 @@ const HomePage: React.FC = () => {
     fetchPopularRecipes(5);
   }, [page, pageSize]);
 
-  if (browseLoading || popularLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (browseLoading || popularLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (browseError || popularError) {
-    return <div>Error: {browseError || popularError}</div>;
-  }
+  // if (browseError || popularError) {
+  //   return <div>Error: {browseError || popularError}</div>;
+  // }
 
   return (
     <>
       <div id="index-page" className="h-screen">
-        <div
+        <Header />
+        {/* <div
           className="flex justify-between items-center"
           style={{ padding: 40 }}
         >
@@ -164,7 +166,7 @@ const HomePage: React.FC = () => {
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-        )}
+        )} */}
       </div>
     </>
   );

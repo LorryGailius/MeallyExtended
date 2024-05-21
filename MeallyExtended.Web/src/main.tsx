@@ -5,18 +5,18 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import RecipePage from "./pages/RecipePage.tsx";
 import RecipeForm from "./pages/RecipeFormPage.tsx";
-import RegisterForm from "./pages/Registration.tsx";
 import RecipeLikePage from "./pages/RecipeLikePage.tsx";
 import SearchRecipesComponent from "./pages/RecipeSearchPage.tsx";
 import RecipeSuggestionComponent from "./pages/RecipeSuggestionPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
+import { Toaster } from "./components/ui/toaster.tsx";
 
 const routes = createBrowserRouter([
   {
     // This is the index page
     path: "/",
-    element: <RegisterForm />,
+    element: <HomePage />,
   },
   {
     path: "/recipes",
@@ -55,6 +55,7 @@ const routes = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <Toaster />
     <RouterProvider router={routes} />
   </React.StrictMode>
 );
