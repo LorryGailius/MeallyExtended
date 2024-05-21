@@ -28,6 +28,22 @@ namespace MeallyExtended.API
                     options.IncludeXmlComments(filepath);
                 });
 
+            // Add CORS services
+            builder.Services.AddCors(options =>
+            {
+                var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins(allowedOrigins)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+
             builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
             builder.Services.AddAuthorizationBuilder();
 
@@ -35,6 +51,11 @@ namespace MeallyExtended.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MeallyConnectionString"), b => b.MigrationsAssembly("MeallyExtended.API")));
 
             builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<MeallyDbContext>().AddApiEndpoints();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+            });
 
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -46,18 +67,6 @@ namespace MeallyExtended.API
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
 
-            // Add CORS services
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigins",
-                    builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
-            });
             var popularityConfig = builder.Configuration["PopularityConfig"];
 
             switch (popularityConfig)

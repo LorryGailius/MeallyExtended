@@ -1,6 +1,9 @@
 ﻿using System.Security.Claims;
 using MeallyExtended.Business.Interfaces;
+using MeallyExtended.DataModels.Entities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeallyExtended.API.Controllers
@@ -37,6 +40,15 @@ namespace MeallyExtended.API.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpPost("logout")]
+        [ProducesResponseType(200)]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout(SignInManager<User> signInManager)
+        {
+            await signInManager.SignOutAsync();
+            return SignOut();   
         }
     }
 }
