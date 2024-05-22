@@ -1,4 +1,4 @@
-interface Recipe {
+export interface Recipe {
   id: string;
   title: string;
   ingredients?: Ingredient[];
@@ -13,47 +13,63 @@ interface Recipe {
   userId?: string;
   user: User;
 }
-interface Ingredient {
-  Quantity: number;
-  Unit: Units;
-  Name: string;
+
+export interface Ingredient {
+  quantity: number;
+  unit: Units;
+  name: string;
 }
 
-interface Category {
-  Name: string;
-  Recipes: Recipe[];
+export interface Category {
+  name: string;
 }
 
-interface Review {
-  Id: string;
-  UserId: string;
-  User: User;
-  Text: string;
-  CreatedDate: Date;
-  ModifiedDate: Date;
-  RecipeId: string;
-  Recipe: Recipe;
+export interface Review {
+  id: string;
+  userEmail: string;
+  text: string;
+  createdDate: Date;
+  recipeId: string;
+  modifiedDate: Date;
+  version: string;
 }
-interface RecipeLikes {
+
+export interface RecipeLikes {
   RecipeId: string;
   Recipe: Recipe;
   LikeCount: number;
   ClickCount: number;
 }
 
-interface User {
+export interface User {
   id: string;
   UserRecipes: Recipe[];
   LikedRecipes: Recipe[];
   Reviews: Review[];
 }
 
-enum Units {
-  Kilogram = 0,
-  Gram = 1,
-  Litre = 2,
-  Millilitre = 3,
-  Unit = 4,
-  Tablespoon = 5,
-  Teaspoon = 6,
+export enum Units {
+  kg = 0,
+  g = 1,
+  L = 2,
+  ml = 3,
+  piece = 4,
+  teaspoon = 5,
+  tablespoon = 6,
+}
+
+export interface RecipeViewModel {
+  id: string;
+  title: string;
+  ingredients: Ingredient[];
+  description?: string;
+  imageUrl?: string;
+  duration: number;
+  instructions: string;
+  categories: Category[];
+  reviews: Review[];
+  likesCount: number;
+  userEmail: string;
+  version: string;
+  isFavorite: boolean;
 }

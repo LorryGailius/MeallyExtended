@@ -55,24 +55,24 @@ namespace MeallyExtended.Business.Repository
 
         public IQueryable<Recipe> GetRecipeByQuery(string query, List<string> categories)
         {
-            return _dbContext.Recipe.Include(x => x.Categories)
+            return _dbContext.Recipe.Include(x => x.Categories).Include(x => x.UsersLiked)
                 .Where(x => x.Categories.Any(x => categories.Any(y => y == x.Name)) && x.Title.Contains(query));
         }
 
         public IQueryable<Recipe> GetRecipesByCategory(List<string> categories)
         {
-            return _dbContext.Recipe.Include(x => x.Categories)
+            return _dbContext.Recipe.Include(x => x.Categories).Include(x => x.UsersLiked)
                 .Where(x => x.Categories.Any(x => categories.Any(y => y == x.Name)));
         }
 
         public IQueryable<Recipe> GetRecipeByTitle(string title)
         {
-            return _dbContext.Recipe.Where(x => x.Title.Contains(title));
+            return _dbContext.Recipe.Include(x => x.UsersLiked).Where(x => x.Title.Contains(title));
         }
 
         public async Task<Recipe?> GetRecipeById(Guid recipeId)
         {
-            return await _dbContext.Recipe.Include(x => x.Categories).Include(x => x.RecipeLikes).Include(x => x.User).FirstOrDefaultAsync(x => x.Id == recipeId);
+            return await _dbContext.Recipe.Include(x => x.Categories).Include(x => x.RecipeLikes).Include(x => x.User).Include(x => x.UsersLiked).FirstOrDefaultAsync(x => x.Id == recipeId);
         }
 
         public IQueryable<Recipe> GetQuery()

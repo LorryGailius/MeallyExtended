@@ -8,15 +8,29 @@ import axios, { AxiosResponse } from "axios";
 
 interface HeaderProps {
   setIsLoggedIn?: (isLoggedIn: boolean) => void;
+  setUserInfo?: (userInfo: string) => void;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
   const nav: NavigateFunction = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<string>("");
 
   useEffect(() => {
     checkLoggedIn();
   }, []);
+
+  useEffect(() => {
+    if (props.setIsLoggedIn) {
+      props.setIsLoggedIn(isLoggedIn);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (props.setUserInfo) {
+      props.setUserInfo(userInfo);
+    }
+  }, [userInfo]);
 
   const checkLoggedIn = () => {
     axios
@@ -26,21 +40,13 @@ const Header: React.FC<HeaderProps> = (props) => {
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           setIsLoggedIn(true);
-          if (props.setIsLoggedIn) {
-            props.setIsLoggedIn(true);
-          }
+          setUserInfo(response.data.email);
         } else {
           setIsLoggedIn(false);
-          if (props.setIsLoggedIn) {
-            props.setIsLoggedIn(false);
-          }
         }
       })
       .catch(() => {
         setIsLoggedIn(false);
-        if (props.setIsLoggedIn) {
-          props.setIsLoggedIn(false);
-        }
       });
   };
 
@@ -56,10 +62,6 @@ const Header: React.FC<HeaderProps> = (props) => {
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           setIsLoggedIn(false);
-          if (props.setIsLoggedIn) {
-            props.setIsLoggedIn(false);
-          }
-          nav("/");
         }
       })
       .catch(() => {
@@ -87,7 +89,7 @@ const Header: React.FC<HeaderProps> = (props) => {
           </>
         ) : (
           <>
-            <LoginForm setIsLoggedIn={setIsLoggedIn} />
+            <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo}/>
             <RegisterForm />
           </>
         )}

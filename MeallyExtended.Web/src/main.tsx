@@ -31,7 +31,7 @@ const routes = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: "/recipes/:recipe_id",
+    path: "/recipe/:recipe_id",
     element: <RecipePage />,
   },
   {
