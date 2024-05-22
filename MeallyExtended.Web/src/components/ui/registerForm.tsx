@@ -20,9 +20,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "./input";
 import apiBaseUrl from "../../../API/apiConfig";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useToast } from "./use-toast";
+import { EyeIcon, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -31,6 +32,7 @@ const loginSchema = z.object({
 
 const RegisterForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -40,7 +42,7 @@ const RegisterForm: React.FC = () => {
     },
   });
 
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   const onSubmit = form.handleSubmit((data) => {
     axios
@@ -50,20 +52,28 @@ const RegisterForm: React.FC = () => {
         },
         withCredentials: true,
       })
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         if (response.status === 200) {
           window.location.reload();
-          toast(
-            {
-              title: "Registration Successful",
-              description: "You have successfully joined Meally!",
-              variant: "success",
-            }
-          )
+          toast({
+            title: "Registration Successful",
+            description: "You have successfully joined Meally!",
+            variant: "success",
+          });
         }
       })
       .catch((error: AxiosError) => {
-        setError(Object.values((error.response?.data as any).errors).join(" "));
+        if (error.response?.status === 400) {
+          setError(
+            Object.values((error.response?.data as any).errors).join(" ")
+          );
+        } else {
+          toast({
+            title: "Registration Failed",
+            description: "Please try again later",
+            variant: "destructive",
+          });
+        }
       });
   });
 
@@ -105,19 +115,28 @@ const RegisterForm: React.FC = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
+                    <FormControl className="relative">
+                      <>
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        {...field}
+                        className="pr-10" // make room for the icon
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-10 bottom-[5.5rem]"
+                      >
+                        {showPassword ? <EyeIcon /> : <EyeOff />}
+                      </button>
+                      </>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormMessage>{error}</FormMessage>
-              <Button
-                type="submit"
-                className="mt-4"
-                variant="secondary"
-              >
+              <Button type="submit" className="mt-4" variant="secondary">
                 Register
               </Button>
             </form>

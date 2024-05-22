@@ -21,8 +21,9 @@ import {
 import { Input } from "./input";
 import apiBaseUrl from "../../../API/apiConfig";
 import { Checkbox } from "./checkbox";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useToast } from "@/components/ui/use-toast";
+import { EyeIcon, EyeOff } from "lucide-react";
 
 interface LoginFormProps {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
@@ -44,6 +45,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     },
   });
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { toast } = useToast();
 
   const onSubmit = form.handleSubmit((data) => {
@@ -61,7 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           withCredentials: true,
         }
       )
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         if (response.status === 200) {
           props.setIsLoggedIn(true);
           toast({
@@ -69,7 +71,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             description: "You are now logged in",
             variant: "success",
           });
-          
+
           setOpen(false);
         }
       })
@@ -113,8 +115,21 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
+                    <FormControl className="relative">
+                      <>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          {...field}
+                          className="pr-10" // make room for the icon
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-10 bottom-[8rem]"
+                        >
+                          {showPassword ? <EyeIcon /> : <EyeOff />}
+                        </button>
+                      </>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

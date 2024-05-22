@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import apiBaseUrl from "../../../API/apiConfig";
 import LoginForm from "./loginForm";
 import RegisterForm from "./registerForm";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  setIsLoggedIn?: (isLoggedIn: boolean) => void;
+}
+
+const Header: React.FC<HeaderProps> = (props) => {
   const nav: NavigateFunction = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
@@ -19,15 +23,24 @@ const Header: React.FC = () => {
       .get(`${apiBaseUrl}/manage/info`, {
         withCredentials: true,
       })
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         if (response.status === 200) {
           setIsLoggedIn(true);
+          if (props.setIsLoggedIn) {
+            props.setIsLoggedIn(true);
+          }
         } else {
           setIsLoggedIn(false);
+          if (props.setIsLoggedIn) {
+            props.setIsLoggedIn(false);
+          }
         }
       })
       .catch(() => {
         setIsLoggedIn(false);
+        if (props.setIsLoggedIn) {
+          props.setIsLoggedIn(false);
+        }
       });
   };
 
@@ -40,9 +53,12 @@ const Header: React.FC = () => {
           withCredentials: true,
         }
       )
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         if (response.status === 200) {
           setIsLoggedIn(false);
+          if (props.setIsLoggedIn) {
+            props.setIsLoggedIn(false);
+          }
           nav("/");
         }
       })
@@ -52,7 +68,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex justify-between items-center px-4">
+    <header className="flex justify-between items-center px-4 py-2">
       <div>
         <a href="/" className="text-5xl font-bold">
           Meally
