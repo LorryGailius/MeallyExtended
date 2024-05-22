@@ -111,6 +111,16 @@ namespace MeallyExtended.Business.Mappers
             };
         }
 
+        public static RecipeDto RecipeToDto(Recipe recipe, string userEmail)
+        {
+            var isFavorite = recipe.UsersLiked.Any(x => x.Email == userEmail);
+
+            var recipeDto = RecipeToDto(recipe);
+            recipeDto.IsFavorite = isFavorite;
+
+            return recipeDto;
+        }
+
         public static Recipe RecipeDtoToRecipe(RecipeDto recipeDto, List<Category> categories, User user)
         {
             return new Recipe

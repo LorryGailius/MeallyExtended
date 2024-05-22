@@ -27,6 +27,7 @@ import { EyeIcon, EyeOff } from "lucide-react";
 
 interface LoginFormProps {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
+  setUserInfo: (userInfo: string) => void;
 }
 
 const loginSchema = z.object({
@@ -66,6 +67,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           props.setIsLoggedIn(true);
+          props.setUserInfo(data.email);
           toast({
             title: "Login successful",
             description: "You are now logged in",

@@ -61,6 +61,9 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetRecipe(Guid recipeId)
         {
+
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
             var result = await _recipeService.GetRecipeById(recipeId);
 
             if (result is null)
@@ -68,7 +71,7 @@ namespace MeallyExtended.API.Controllers
                 return NotFound();
             }
 
-            return Ok(MeallyMapper.RecipeToDto(result));
+            return Ok(MeallyMapper.RecipeToDto(result, userEmail));
         }
 
         /// <summary>
@@ -182,7 +185,7 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [Authorize]
-        public async Task<IActionResult> LikeRecipe([FromBody] Guid recipeId)
+        public async Task<IActionResult> LikeRecipe([FromQuery] Guid recipeId)
         {
             var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
 
