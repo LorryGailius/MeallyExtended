@@ -1,14 +1,14 @@
 import Header from "@/components/ui/header";
-import { useRecipe } from "@/hooks/useRecipe";
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import apiBaseUrl from "../../API/apiConfig";
 import { useParams } from "react-router";
 import { Ingredient, RecipeViewModel, Review, Units } from "@/models/models";
 import { Button } from "@/components/ui/button";
-import { Heart, HeartIcon, Pencil } from "lucide-react";
+import { Heart, Pencil } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import ReviewComponent from "@/components/ui/comment";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const RecipePage: React.FC = () => {
   const { recipe_id } = useParams<string>();
@@ -19,6 +19,7 @@ const RecipePage: React.FC = () => {
   const [recipeReviews, setRecipeReviews] = useState<Review[]>([]);
   const [showMore, setShowMore] = useState<boolean>(true);
   const [userInfo, setUserInfo] = useState<string>("");
+  const nav: NavigateFunction = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -37,7 +38,9 @@ const RecipePage: React.FC = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response.status === 404) {
+          nav("/not-found");
+        }
       });
   };
 
@@ -71,7 +74,7 @@ const RecipePage: React.FC = () => {
   };
 
   const LikeRecipe = () => {
-    if(!isLoggedIn){
+    if (!isLoggedIn) {
       toast({
         title: "Login required",
         description: "You need to be logged in to like a recipe",
@@ -105,96 +108,109 @@ const RecipePage: React.FC = () => {
     <div id="recipe-page" className="h-screen pb-10">
       <Header setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
       {loading && <div>Loading...</div>}
-      <div className="my-4">
-        <div className="w-full bg-primary-background p-10 flex justify-between">
-          <div className="flex justify-center gap-24">
-            <h1 className="text-4xl font-bold text-white">{recipe?.title}</h1>
-            <div>
-              <div className="flex gap-4">
-                {recipe?.categories.map((category) => (
-                  <div
-                    key={category.name}
-                    className="bg-accent p-2 rounded-md text-white"
-                  >
-                    <p className="font-semibold select-none">{category.name}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {userInfo !== recipe?.userEmail && (
-            <Button className="bg-transparent" onClick={LikeRecipe}>
-              {recipe?.isFavorite ? <Heart fill="white" /> : <Heart />}
-            </Button>
-          )}
-
-          {isLoggedIn && userInfo === recipe?.userEmail && (
-            <Button className="bg-transparent">
-              <Pencil />
-            </Button>
-          )}
-        </div>
-      </div>
-      <div className="flex justify-between">
-        <div className="mx-10">
-          <div className="flex gap-24">
-            <div className="border-8 border-white shadow-lg w-[400px] h-[400px]">
-              <img src={recipe?.imageUrl} alt={recipe?.title} width={400} height={400}/>
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold mb-4">Ingredients</h1>
-              <ul>
-                {recipe?.ingredients.map((ingredient: Ingredient) => (
-                  <li key={ingredient.name}>
-                    {ingredient.quantity}{" "}
-                    {ingredient.unit != 4
-                      ? Units[ingredient.unit].toString()
-                      : null}{" "}
-                    {ingredient.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="my-10 mx-4 max-w-6xl">
-            <h1 className="text-3xl font-bold mb-4">Instructions</h1>
-            <p>{recipe?.instructions}</p>
-          </div>
-        </div>
-        <div className="max-w-xl w-full">
-          <div className="flex flex-col">
-            <h1 className="text-3xl font-bold mb-4">Comments</h1>
-            <div>
-              {recipeReviews.length === 0 && !commentsLoading && (
-                <div className="text-start">No comments yet</div>
-              )}
-
-              {commentsLoading && <div>Loading comments...</div>}
-              <div className="pr-10">
-                {recipeReviews.length > 0 && (
-                  <div>
-                    {recipeReviews.map((review) => (
-                      <ReviewComponent key={review.id} review={review} />
+      {!loading && recipe && (
+        <>
+          <div className="my-4">
+            <div className="w-full bg-primary-background p-10 flex justify-between">
+              <div className="flex justify-center gap-24">
+                <h1 className="text-4xl font-bold text-white">
+                  {recipe?.title}
+                </h1>
+                <div>
+                  <div className="flex gap-4">
+                    {recipe?.categories.map((category) => (
+                      <div
+                        key={category.name}
+                        className="bg-accent p-2 rounded-md text-white"
+                      >
+                        <p className="font-semibold select-none">
+                          {category.name}
+                        </p>
+                      </div>
                     ))}
                   </div>
-                )}
-                {showMore && recipeReviews.length !== 0 && (
-                  <div className="flex justify-center">
-                    <Button variant="ghost" onClick={getMoreComments}>
-                      Show more
-                    </Button>
-                  </div>
-                )}
+                </div>
+              </div>
 
-                {recipeReviews.length > 0 && !showMore && (
-                  <div className="text-center">No more comments</div>
-                )}
+              {userInfo !== recipe?.userEmail && (
+                <Button className="bg-transparent" onClick={LikeRecipe}>
+                  {recipe?.isFavorite ? <Heart fill="white" /> : <Heart />}
+                </Button>
+              )}
+
+              {isLoggedIn && userInfo === recipe?.userEmail && (
+                <Button className="bg-transparent">
+                  <Pencil />
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div className="mx-10">
+              <div className="flex gap-24">
+                <div className="border-8 border-white shadow-lg w-[400px] h-[400px]">
+                  <img
+                    src={recipe?.imageUrl}
+                    alt={recipe?.title}
+                    width={400}
+                    height={400}
+                  />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold mb-4">Ingredients</h1>
+                  <ul>
+                    {recipe?.ingredients.map((ingredient: Ingredient) => (
+                      <li key={ingredient.name}>
+                        {ingredient.quantity}{" "}
+                        {ingredient.unit != 4
+                          ? Units[ingredient.unit].toString()
+                          : null}{" "}
+                        {ingredient.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="my-10 mx-4 max-w-6xl">
+                <h1 className="text-3xl font-bold mb-4">Instructions</h1>
+                <p>{recipe?.instructions}</p>
+              </div>
+            </div>
+            <div className="max-w-xl w-full">
+              <div className="flex flex-col">
+                <h1 className="text-3xl font-bold mb-4">Comments</h1>
+                <div>
+                  {recipeReviews.length === 0 && !commentsLoading && (
+                    <div className="text-start">No comments yet</div>
+                  )}
+
+                  {commentsLoading && <div>Loading comments...</div>}
+                  <div className="pr-10">
+                    {recipeReviews.length > 0 && (
+                      <div>
+                        {recipeReviews.map((review) => (
+                          <ReviewComponent key={review.id} review={review} />
+                        ))}
+                      </div>
+                    )}
+                    {showMore && recipeReviews.length !== 0 && (
+                      <div className="flex justify-center">
+                        <Button variant="ghost" onClick={getMoreComments}>
+                          Show more
+                        </Button>
+                      </div>
+                    )}
+
+                    {recipeReviews.length > 0 && !showMore && (
+                      <div className="text-center">No more comments</div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
