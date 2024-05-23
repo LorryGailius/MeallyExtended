@@ -26,7 +26,7 @@ const ReviewComponent: React.FC<CommentProps> = (props) => {
       );
     }
     return formatDate(date);
-  };
+  };  
 
   return (
     <div className="bg-orange-200 rounded-xl px-4 py-2 w-full">

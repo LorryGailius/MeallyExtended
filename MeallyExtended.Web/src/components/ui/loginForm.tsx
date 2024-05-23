@@ -118,7 +118,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl className="relative">
-                      <>
+                      <div className="flex gap-4">
                         <Input
                           type={showPassword ? "text" : "password"}
                           {...field}
@@ -127,11 +127,11 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-10 bottom-[8rem]"
+                          className=""
                         >
                           {showPassword ? <EyeIcon /> : <EyeOff />}
                         </button>
-                      </>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

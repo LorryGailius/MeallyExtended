@@ -116,20 +116,20 @@ const RegisterForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl className="relative">
-                      <>
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        {...field}
-                        className="pr-10" // make room for the icon
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-10 bottom-[5.5rem]"
-                      >
-                        {showPassword ? <EyeIcon /> : <EyeOff />}
-                      </button>
-                      </>
+                    <div className="flex gap-4">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          {...field}
+                          className="pr-10" // make room for the icon
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className=""
+                        >
+                          {showPassword ? <EyeIcon /> : <EyeOff />}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
