@@ -11,6 +11,8 @@ import RecipeSuggestionComponent from "./pages/RecipeSuggestionPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
+import Header from "./components/ui/header.tsx";
+import BrowsePage from "./pages/BrowsePage.tsx";
 
 const routes = createBrowserRouter([
   {
@@ -20,7 +22,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/recipes",
-    element: <HomePage />,
+    element: <BrowsePage />,
   },
   {
     path: "/recipeForm",
