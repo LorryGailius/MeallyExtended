@@ -22,6 +22,7 @@ public class ClickPopularityService : IPopularityService
             .Include(x => x.Recipe.User)
             .Include(x => x.Recipe.RecipeLikes)
             .Include(x => x.Recipe.Categories)
+            .Include(x => x.Recipe.UsersLiked)
             .Select(x => x.Recipe)
             .ToListAsync();
 
