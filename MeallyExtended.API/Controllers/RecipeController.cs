@@ -62,7 +62,7 @@ namespace MeallyExtended.API.Controllers
         public async Task<IActionResult> GetRecipe(Guid recipeId)
         {
 
-            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value ?? "";
 
             var result = await _recipeService.GetRecipeById(recipeId);
 
@@ -107,7 +107,7 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(204)]
         public async Task<IActionResult> GetPopularRecipes([FromQuery] int amount = 5)
         {
-            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value ?? "";
 
             var result = await _popularityService.GetPopularRecipes(amount);
 
@@ -130,7 +130,7 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(204)]
         public async Task<IActionResult> BrowseRecipes([FromQuery] int pageNo = 1, [FromQuery] int pageSize = 10)
         {
-            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value ?? "";
 
             var result = await _recipeService.GetBrowseRecipes(userEmail,pageNo, pageSize);
 
@@ -170,7 +170,7 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(204)]
         public async Task<ActionResult<PaginationResult<RecipeDto>>> GetRecipesByQuery([FromQuery] string? query, [FromQuery] List<string>? categories, [FromQuery] int pageNo = 1, [FromQuery] int pageSize = 10)
         {
-            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value ?? "";
 
             var result = await _recipeService.GetRecipesByQuery(query, categories, userEmail, pageNo, pageSize);
 
