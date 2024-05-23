@@ -9,6 +9,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { RecipeViewModel } from "@/models/models";
+import placeholder from "@/assets/placeholder.png";
 
 interface RecipeGridProps {
   recipes: RecipeViewModel[];
@@ -31,15 +32,15 @@ const RecipeGrid: React.FC<RecipeGridProps> = ({
     <div>
       <div className={`grid grid-cols-${columns} gap-4`}>
         {recipes.map((recipe) => (
-          <Link to={`/recipes/${recipe.id}`} key={recipe.id}>
+          <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
             <div className="flex flex-col items-center p-4">
               <div
-                style={{ height: "100px", width: "100%", overflow: "hidden" }}
               >
                 <img
-                  src={recipe.imageUrl || "https://via.placeholder.com/150"}
+                  src={recipe.imageUrl || placeholder}
                   alt={recipe.title}
-                  className="w-full object-cover"
+                  width={200}
+                  height={200}  
                 />
               </div>
               <p className="text-sm">{recipe.duration} minutes</p>

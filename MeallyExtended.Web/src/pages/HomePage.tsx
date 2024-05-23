@@ -4,6 +4,7 @@ import { useRecipesPopular } from "@/hooks/useRecipesPopular";
 import { Link } from "react-router-dom";
 import Header from "@/components/ui/header";
 import RecipeGrid from "../components/ui/RecipeGrid";
+import placeholer from "@/assets/placeholder.png";
 
 const HomePage: React.FC = () => {
   const {
@@ -47,19 +48,15 @@ const HomePage: React.FC = () => {
           </h2>
           <div className="grid grid-cols-4 gap-10">
             {popularRecipes.map((recipe) => (
-              <Link to={`/recipes/${recipe.id}`} key={recipe.id}>
+              <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
                 <div className="flex flex-col items-center p-4">
                   <div
-                    style={{
-                      height: "100px",
-                      width: "100%",
-                      overflow: "hidden",
-                    }}
                   >
                     <img
-                      src={recipe.imageUrl || "https://via.placeholder.com/150"}
+                      src={recipe.imageUrl || placeholer}
                       alt={recipe.title}
-                      className="w-full object-cover"
+                      width={200}
+                      height={200}  
                     />
                   </div>
                   <p className="text-sm">{recipe.duration} minutes</p>
