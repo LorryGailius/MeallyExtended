@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast";
 import ReviewComponent from "@/components/ui/comment";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import placeholder from "@/assets/placeholder.png";
+import CommentForm from "@/components/ui/commentForm";
 
 const RecipePage: React.FC = () => {
   const { recipe_id } = useParams<string>();
@@ -69,6 +70,10 @@ const RecipePage: React.FC = () => {
         console.error(error);
       });
   };
+
+  const attachComment = () => {
+    fetchComments(recipe_id!);
+  }
 
   const getMoreComments = () => {
     fetchComments(recipe_id!, recipeReviews.length, true);
@@ -151,7 +156,7 @@ const RecipePage: React.FC = () => {
               <div className="flex gap-24">
                 <div className="border-8 border-white shadow-lg w-[400px] h-[400px]">
                   <img
-                    src={recipe?.imageUrl? recipe.imageUrl : placeholder}
+                    src={recipe?.imageUrl ? recipe.imageUrl : placeholder}
                     alt={recipe?.title}
                     width={400}
                     height={400}
@@ -159,8 +164,17 @@ const RecipePage: React.FC = () => {
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold mb-4">Ingredients</h1>
-                  <ul>
+                  <ul className="max-h-[400px] flex flex-col flex-wrap gap-x-20">
                     {recipe?.ingredients.map((ingredient: Ingredient) => (
+                      <li key={ingredient.name}>
+                        {ingredient.quantity}{" "}
+                        {ingredient.unit != 4
+                          ? Units[ingredient.unit].toString()
+                          : null}{" "}
+                        {ingredient.name}
+                      </li>
+                    ))}
+                                        {recipe?.ingredients.map((ingredient: Ingredient) => (
                       <li key={ingredient.name}>
                         {ingredient.quantity}{" "}
                         {ingredient.unit != 4
@@ -173,37 +187,48 @@ const RecipePage: React.FC = () => {
                 </div>
               </div>
               <div className="my-10 mx-4 max-w-6xl">
+                <p>{recipe?.description}</p>
+              </div>
+              <div className="my-10 mx-4 max-w-6xl">
                 <h1 className="text-3xl font-bold mb-4">Instructions</h1>
                 <p>{recipe?.instructions}</p>
-              </div>
+                </div>
             </div>
             <div className="max-w-xl w-full">
-              <div className="flex flex-col">
-                <h1 className="text-3xl font-bold mb-4">Comments</h1>
-                <div>
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between mb-4 pr-10">
+                <h1 className="text-3xl font-bold">Comments</h1>
+                {isLoggedIn && (
+                  <CommentForm
+                  recipeId={recipe_id!}
+                  attachComment={attachComment}
+                  />
+                )}
+                </div>
+                <div className="h-full">
                   {recipeReviews.length === 0 && !commentsLoading && (
                     <div className="text-start">No comments yet</div>
                   )}
 
                   {commentsLoading && <div>Loading comments...</div>}
-                  <div className="pr-10">
+                  <div className="pr-10 max-h-[50vh]">
                     {recipeReviews.length > 0 && (
-                      <div>
+                      <div className="max-h-[64vh] flex flex-col gap-4 overflow-y-auto pr-4 scroll-smooth">
                         {recipeReviews.map((review) => (
                           <ReviewComponent key={review.id} review={review} />
                         ))}
-                      </div>
-                    )}
-                    {showMore && recipeReviews.length !== 0 && (
-                      <div className="flex justify-center">
-                        <Button variant="ghost" onClick={getMoreComments}>
-                          Show more
-                        </Button>
-                      </div>
-                    )}
+                        {showMore && recipeReviews.length !== 0 && (
+                          <div className="flex justify-center">
+                            <Button variant="ghost" onClick={getMoreComments}>
+                              Show more
+                            </Button>
+                          </div>
+                        )}
 
-                    {recipeReviews.length > 0 && !showMore && (
-                      <div className="text-center">No more comments</div>
+                        {recipeReviews.length > 0 && !showMore && (
+                          <div className="text-center">No more comments</div>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

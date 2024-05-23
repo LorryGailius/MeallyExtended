@@ -26,7 +26,7 @@ namespace MeallyExtended.Business.Repository
             return await _dbContext.Review
                 .Where(r => r.RecipeId == recipeId)
                 .OrderBy(x => x.ModifiedDate)
-                .ThenBy(x => x.CreatedDate)
+                .ThenByDescending(x => x.CreatedDate)
                 .Skip(skip)
                 .Take(limit)
                 .ToListAsync();
