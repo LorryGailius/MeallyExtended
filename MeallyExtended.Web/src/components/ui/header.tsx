@@ -5,6 +5,15 @@ import apiBaseUrl from "../../../API/apiConfig";
 import LoginForm from "./loginForm";
 import RegisterForm from "./registerForm";
 import axios, { AxiosResponse } from "axios";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { HamIcon, Menu } from "lucide-react";
 
 interface HeaderProps {
   setIsLoggedIn?: (isLoggedIn: boolean) => void;
@@ -83,13 +92,31 @@ const Header: React.FC<HeaderProps> = (props) => {
             <Button onClick={() => nav("/create-recipe")}>
               Create New Recipe
             </Button>
-            <Button variant="secondary" onClick={logout}>
-              Logout
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button variant="secondary">
+                  <Menu> </Menu>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>{userInfo}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <a href="/favorites">
+                  <DropdownMenuItem>Favorites</DropdownMenuItem>
+                </a>
+                <a href="/my-recipes">
+                  <DropdownMenuItem>My recipes</DropdownMenuItem>
+                </a>
+                <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </>
         ) : (
           <>
-            <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo}/>
+            <LoginForm
+              setIsLoggedIn={setIsLoggedIn}
+              setUserInfo={setUserInfo}
+            />
             <RegisterForm />
           </>
         )}
