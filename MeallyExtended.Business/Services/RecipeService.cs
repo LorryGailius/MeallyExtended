@@ -88,36 +88,36 @@ namespace MeallyExtended.Business.Services
             return recipe;
         }
 
-        public async Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string? query, List<string>? categories, int pageNo = 1, int pageSize = 10)
+        public async Task<PaginationResult<RecipeDto>> GetRecipesByQuery(string? query, List<string>? categories, string userEmail, int pageNo = 1, int pageSize = 10)
         {
             if (!string.IsNullOrWhiteSpace(query))
             {
                 if (categories.Count != 0)
                 {
-                    return await GetPaginationResult(_recipeRepository.GetRecipeByQuery(query, categories), pageNo, pageSize);
+                    return await GetPaginationResult(_recipeRepository.GetRecipeByQuery(query, categories), pageNo, pageSize, userEmail);
                 }
 
-                return await GetPaginationResult(_recipeRepository.GetRecipeByTitle(query), pageNo, pageSize);
+                return await GetPaginationResult(_recipeRepository.GetRecipeByTitle(query), pageNo, pageSize, userEmail);
             }
 
             if (categories.Count != 0)
             {
-                return await GetPaginationResult(_recipeRepository.GetRecipesByCategory(categories), pageNo, pageSize);
+                return await GetPaginationResult(_recipeRepository.GetRecipesByCategory(categories), pageNo, pageSize, userEmail);
             }
-            return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
+            return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize, userEmail);
         }
 
-        public async Task<PaginationResult<RecipeDto>> GetBrowseRecipes(int pageNo, int pageSize)
+        public async Task<PaginationResult<RecipeDto>> GetBrowseRecipes(string userEmail, int pageNo, int pageSize)
         {
-            return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize);
+            return await GetPaginationResult(_recipeRepository.GetQuery(), pageNo, pageSize, userEmail);
         }
 
-        private async Task<PaginationResult<RecipeDto>> GetPaginationResult(IQueryable<Recipe> recipeQuery, int pageNo, int pageSize)
+        private async Task<PaginationResult<RecipeDto>> GetPaginationResult(IQueryable<Recipe> recipeQuery, int pageNo, int pageSize, string userEmail)
         {
             var totalRecipes = await recipeQuery.CountAsync();
             var totalPages = (int)Math.Ceiling(totalRecipes / (double)pageSize);
             var recipeResult = await recipeQuery.Skip((pageNo - 1) * pageSize).Take(pageSize)
-                .Include(x => x.User).Include(x => x.RecipeLikes).Include(x => x.Categories).Select(x => MeallyMapper.RecipeToDto(x)).ToListAsync();
+                .Include(x => x.User).Include(x => x.UsersLiked).Include(x => x.RecipeLikes).Include(x => x.Categories).Select(x => MeallyMapper.RecipeToDto(x, userEmail)).ToListAsync();
 
             return new PaginationResult<RecipeDto>
             {

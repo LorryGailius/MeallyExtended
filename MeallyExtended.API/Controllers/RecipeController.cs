@@ -107,6 +107,8 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(204)]
         public async Task<IActionResult> GetPopularRecipes([FromQuery] int amount = 5)
         {
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
             var result = await _popularityService.GetPopularRecipes(amount);
 
             if (!result.Any())
@@ -114,7 +116,7 @@ namespace MeallyExtended.API.Controllers
                 return NoContent();
             }
 
-            return Ok(result.Select(MeallyMapper.RecipeToDto).ToList());
+            return Ok(result.Select(x => MeallyMapper.RecipeToDto(x, userEmail)));
         }
 
         /// <summary>
@@ -128,7 +130,9 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(204)]
         public async Task<IActionResult> BrowseRecipes([FromQuery] int pageNo = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _recipeService.GetBrowseRecipes(pageNo, pageSize);
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
+            var result = await _recipeService.GetBrowseRecipes(userEmail,pageNo, pageSize);
 
             if (!result.Data.Any())
             {
@@ -166,7 +170,9 @@ namespace MeallyExtended.API.Controllers
         [ProducesResponseType(204)]
         public async Task<ActionResult<PaginationResult<RecipeDto>>> GetRecipesByQuery([FromQuery] string? query, [FromQuery] List<string>? categories, [FromQuery] int pageNo = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _recipeService.GetRecipesByQuery(query, categories, pageNo, pageSize);
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
+            var result = await _recipeService.GetRecipesByQuery(query, categories, userEmail, pageNo, pageSize);
 
             if (!result.Data.Any())
             {
