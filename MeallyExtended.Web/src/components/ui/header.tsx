@@ -71,6 +71,7 @@ const Header: React.FC<HeaderProps> = (props) => {
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           setIsLoggedIn(false);
+          setUserInfo("");
         }
       })
       .catch(() => {
