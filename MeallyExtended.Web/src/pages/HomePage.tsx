@@ -19,11 +19,11 @@ const HomePage: React.FC = () => {
     popularRecipes,
   } = useRecipesPopular();
   const [page] = useState(1);
-  const [pageSize] = useState(15);
+  const [pageSize] = useState(5);
 
   useEffect(() => {
     browseRecipes(page, pageSize);
-    fetchPopularRecipes(5);
+    fetchPopularRecipes(4);
   }, [page, pageSize]);
 
   if (browseLoading || popularLoading) {
@@ -45,31 +45,27 @@ const HomePage: React.FC = () => {
           <h2 className="text-3xl font-regular text-white">
             Popular recipes today
           </h2>
-          <div className="grid grid-cols-5 gap-10">
+          <div className="grid grid-cols-4 gap-10">
             {popularRecipes.map((recipe) => (
               <Link to={`/recipes/${recipe.id}`} key={recipe.id}>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center p-4">
                   <div
                     style={{
                       height: "100px",
-                      width: "100px",
+                      width: "100%",
                       overflow: "hidden",
                     }}
                   >
                     <img
                       src={recipe.imageUrl || "https://via.placeholder.com/150"}
                       alt={recipe.title}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
+                      className="w-full object-cover"
                     />
                   </div>
                   <p className="text-sm">{recipe.duration} minutes</p>
                   <p className="text-sm">
                     {recipe.categories.length !== 0
-                      ? recipe.categories[0].Name
+                      ? recipe.categories[0].name
                       : ""}
                   </p>
                   <p className="text-lg">{recipe.title}</p>
