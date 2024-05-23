@@ -9,6 +9,7 @@ import { Heart, Pencil } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import ReviewComponent from "@/components/ui/comment";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import placeholder from "@/assets/placeholder.png";
 
 const RecipePage: React.FC = () => {
   const { recipe_id } = useParams<string>();
@@ -150,7 +151,7 @@ const RecipePage: React.FC = () => {
               <div className="flex gap-24">
                 <div className="border-8 border-white shadow-lg w-[400px] h-[400px]">
                   <img
-                    src={recipe?.imageUrl}
+                    src={recipe?.imageUrl? recipe.imageUrl : placeholder}
                     alt={recipe?.title}
                     width={400}
                     height={400}
