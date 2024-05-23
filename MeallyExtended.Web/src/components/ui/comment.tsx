@@ -7,25 +7,25 @@ interface CommentProps {
 const ReviewComponent: React.FC<CommentProps> = (props) => {
   const formatDate = (dateInput: Date): string => {
     const date = new Date(dateInput);
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1) +
-      "-" +
-      date.getDate() +
-      " " +
-      date.getHours() +
-      ":" +
-      date.getMinutes()
-    );
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
   const formatModified = (dateInput: Date): string => {
     const date = new Date(dateInput);
     if (date.getDate() === new Date().getDate()) {
-      formatDate(date);
+      return (
+        date.getHours().toString().padStart(2, "0") +
+        ":" +
+        date.getMinutes().toString().padStart(2, "0")
+      );
     }
-    return date.getHours() + ":" + date.getMinutes();
+    return formatDate(date);
   };
 
   return (
@@ -33,11 +33,13 @@ const ReviewComponent: React.FC<CommentProps> = (props) => {
       <div>
         <h3 className="text-orange-500 mb-2">{props.review.userEmail}</h3>
         <p>{props.review.text}</p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 font-bold">
           {formatDate(props.review.createdDate)}{" "}
-          {props.review.modifiedDate
-            ? `Modified (${formatModified(props.review.modifiedDate)})`
-            : null}
+          <span className="font-light">
+            {props.review.modifiedDate
+              ? `Modified (${formatModified(props.review.modifiedDate)})`
+              : null}
+          </span>
         </p>
       </div>
     </div>
