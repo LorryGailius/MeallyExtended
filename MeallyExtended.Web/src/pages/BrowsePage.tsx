@@ -31,8 +31,8 @@ const BrowsePage: React.FC = () => {
     }
   }, [searchQuery, currentPage, pageSize]);
 
-  const loading = searchLoading || browseLoading;
-  const error = searchError || browseError;
+  const loading = browseLoading;
+  const error = browseError;
   const [recipes, setRecipes] = useState<RecipeViewModel[]>([]);
   const totalPages = searchResponse?.totalPages || browseTotalPages;
 
@@ -46,7 +46,7 @@ const BrowsePage: React.FC = () => {
     }
   }, [searchResponse, browseResponse, searchQuery]);
 
-  if (loading || searchLoading || browseLoading) {
+  if (loading || browseLoading) {
     return <div>Loading...</div>;
   }
 
