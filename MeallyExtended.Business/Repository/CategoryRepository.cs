@@ -75,5 +75,10 @@ namespace MeallyExtended.Business.Repository
             return await _dbContext.SaveChangesAsync() != 0;
 
         }
+
+        public async Task<IEnumerable<string>> GetCategoryNames()
+        {
+            return await _dbContext.Category.Select(x => x.Name).ToListAsync();
+        }
     }
 }

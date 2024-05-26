@@ -50,6 +50,8 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   const { toast } = useToast();
 
   const onSubmit = form.handleSubmit((data) => {
+    console.log("Form sumittttttted", data);
+
     axios
       .post(
         `${apiBaseUrl}/login?useCookies=true&useSessionCookies=${!data.rememberMe}`,

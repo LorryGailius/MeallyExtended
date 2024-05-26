@@ -47,5 +47,24 @@ namespace MeallyExtended.API.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Get all categories
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("category-names")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> GetCategoriesNames()
+        {
+            var result = await _categoryService.GetCategoryNames();
+
+            if (!result.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(result);
+        }
     }
 }
