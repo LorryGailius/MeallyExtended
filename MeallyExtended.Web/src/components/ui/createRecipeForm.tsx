@@ -267,9 +267,11 @@ const CreateRecipeForm: React.FC<CreateRecipeFormProps> = (props) => {
                   )}
                 </div>
               ))}
-              <Button onClick={() => appendCategory({ category: "" })}>
-                Add category
-              </Button>
+              {categoryFields.length < 5 && (
+                <Button onClick={() => appendCategory({ category: "" })}>
+                  Add category
+                </Button>
+              )}
             </div>
           </div>
 
