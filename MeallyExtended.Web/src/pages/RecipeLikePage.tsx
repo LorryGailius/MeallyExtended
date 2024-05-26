@@ -1,37 +1,61 @@
-import React, { useState } from "react";
-import { useLikeRecipe } from "@/hooks/useLikeRecipe";
+import React, { useEffect, useState } from "react";
+import { RecipeViewModel } from "@/models/models";
+import apiBaseUrl from "../../API/apiConfig";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import RecipeGrid from "@/components/ui/RecipeGrid";
+import Header from "@/components/ui/header";
 
 function LikeRecipeComponent() {
-  const { likeRecipe, loading, error, response } = useLikeRecipe();
-  const [recipeId, setRecipeId] = useState("");
+  const [recipes, setRecipes] = useState<Array<RecipeViewModel>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
-  const handleLike = async () => {
-    // Ensure the user is authenticated before attempting to like
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      alert("You must be logged in to like a recipe");
-      return;
-    }
+  useEffect(() => {
+    fetchRecipes(currentPage);
+  }, []);
 
-    await likeRecipe(recipeId);
+  useEffect(() => {
+    fetchRecipes(currentPage);
+  }, [currentPage]);
+
+  const fetchRecipes = (page: number) => {
+    setLoading(true);
+    axios
+      .get(`${apiBaseUrl}/api/User/favorites?pageNo=${page}&pageSize=5`, {
+        withCredentials: true,
+      })
+      .then((response: AxiosResponse<RecipeViewModel[]>) => {
+        setRecipes(response.data.data);
+        setLoading(false);
+      })
+      .catch((error: AxiosError) => {
+        console.error(error);
+        setLoading(false);
+      });
   };
 
   return (
     <div>
-      <h2>Like a Recipe</h2>
-      <input
-        type="text"
-        value={recipeId}
-        onChange={(e) => setRecipeId(e.target.value)}
-        placeholder="Enter Recipe ID"
-        required
-      />
-      <button onClick={handleLike} disabled={loading}>
-        Like Recipe
-      </button>
+      <Header setIsLoggedIn={setIsLoggedIn} />
+      <h1 className="ml-4 mt-4 text-4xl font-bold">Favorites</h1>
       {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {response && <p>Success: {JSON.stringify(response)}</p>}
+      <div className="recipe-container">
+        {!loading && isLoggedIn && recipes.length === 0 && (
+          <h1>No favorite recipes found</h1>
+        )}
+        {!loading && recipes.length > 0 && (
+          <RecipeGrid
+            recipes={recipes}
+            columns={5}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            fetchPage={setCurrentPage}
+            pagination={true}
+          />
+        )}
+      </div>
     </div>
   );
 }

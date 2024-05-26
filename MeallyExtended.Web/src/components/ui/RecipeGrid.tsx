@@ -30,7 +30,7 @@ const RecipeGrid: React.FC<RecipeGridProps> = ({
 }) => {
   return (
     <div>
-      <div className={`grid grid-cols-${columns} gap-4`}>
+      <div className={`grid grid-cols-5 gap-4`}>
         {recipes.map((recipe) => (
           <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
             <div className="flex flex-col items-center p-4">

@@ -46,7 +46,7 @@ const routes = createBrowserRouter([
     element: <RecipeSuggestionComponent />,
   },
   {
-    path: "/Recipe/Likes",
+    path: "/favorites",
     element: <RecipeLikePage />,
   },
   {
