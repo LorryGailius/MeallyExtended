@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
 import Header from "./components/ui/header.tsx";
 import BrowsePage from "./pages/BrowsePage.tsx";
+import CreateRecipePage from "./pages/CreateRecipePage.tsx";
 
 const routes = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const routes = createBrowserRouter([
   {
     path: "/Recipe/Likes",
     element: <RecipeLikePage />,
+  },
+  {
+    path: "/create-recipe",
+    element: <CreateRecipePage />,
   },
   {
     // This is the 404 page

@@ -33,7 +33,7 @@ namespace MeallyExtended.API.Controllers
         [Authorize]
         public async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest request)
         {
-            if (string.IsNullOrEmpty(request.Title) || string.IsNullOrEmpty(request.Description) || request.Ingredients.Count == 0 || string.IsNullOrEmpty(request.Instructions))
+            if (string.IsNullOrEmpty(request.Title) || string.IsNullOrEmpty(request.Description) || request.Ingredients.Length == 0 || string.IsNullOrEmpty(request.Instructions))
             {
                 return BadRequest("Please fill in all fields");
             }

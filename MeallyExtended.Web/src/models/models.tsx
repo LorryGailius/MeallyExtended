@@ -35,17 +35,17 @@ export interface Review {
 }
 
 export interface RecipeLikes {
-  RecipeId: string;
-  Recipe: Recipe;
-  LikeCount: number;
-  ClickCount: number;
+  recipeId: string;
+  recipe: Recipe;
+  likeCount: number;
+  clickCount: number;
 }
 
 export interface User {
   id: string;
-  UserRecipes: Recipe[];
-  LikedRecipes: Recipe[];
-  Reviews: Review[];
+  userRecipes: Recipe[];
+  likedRecipes: Recipe[];
+  reviews: Review[];
 }
 
 export enum Units {

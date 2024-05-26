@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
         public required string Title { get; set; }
-        public List<Ingredient> Ingredients { get; set; } = [];
+        public Ingredient[] Ingredients { get; set; } = [];
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public double Duration { get; set; }

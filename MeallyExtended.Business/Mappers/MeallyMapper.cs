@@ -99,7 +99,7 @@ namespace MeallyExtended.Business.Mappers
                 Id = recipe.Id,
                 Title = recipe.Title,
                 Description = recipe.Description,
-                Ingredients = recipe.Ingredients.ToList(),
+                Ingredients = recipe.Ingredients.ToArray(),
                 Instructions = recipe.Instructions,
                 LikesCount = recipe.RecipeLikes.LikeCount,
                 Duration = recipe.Duration,

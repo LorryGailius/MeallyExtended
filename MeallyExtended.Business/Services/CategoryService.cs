@@ -27,5 +27,10 @@ namespace MeallyExtended.Business.Services
         {
             return await _categoryRepository.GetCategories();
         }
+
+        public async Task<IEnumerable<string>> GetCategoryNames()
+        {
+            return await _categoryRepository.GetCategoryNames();
+        }
     }
 }
