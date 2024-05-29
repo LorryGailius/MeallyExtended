@@ -11,13 +11,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModels", "DataModels", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{9578D576-2B88-48E3-B3A7-B2CF153506F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.DataModels", "MeallyExtended.DataModels\MeallyExtended.DataModels.csproj", "{AE77D69E-228F-4758-8DAD-78E530BE1196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.DataModels", "MeallyExtended.DataModels\MeallyExtended.DataModels.csproj", "{AE77D69E-228F-4758-8DAD-78E530BE1196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.Contracts", "MeallyExtended.Contracts\MeallyExtended.Contracts.csproj", "{BBE7E8E7-C614-4553-8E50-396C50C296DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.Contracts", "MeallyExtended.Contracts\MeallyExtended.Contracts.csproj", "{BBE7E8E7-C614-4553-8E50-396C50C296DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.Business", "MeallyExtended.Business\MeallyExtended.Business.csproj", "{FD13D32D-57F9-4D89-9ABC-9D1A37753B47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.Business", "MeallyExtended.Business\MeallyExtended.Business.csproj", "{FD13D32D-57F9-4D89-9ABC-9D1A37753B47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.API", "MeallyExtended.API\MeallyExtended.API.csproj", "{4F231DF8-0301-47B5-A4DA-DA22077A144B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeallyExtended.API", "MeallyExtended.API\MeallyExtended.API.csproj", "{4F231DF8-0301-47B5-A4DA-DA22077A144B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeallyExtended.Business.Tests", "MeallyExtended.Business.Tests\MeallyExtended.Business.Tests.csproj", "{6E617C95-6B5D-4AAC-B7B2-E366074E22B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{4F231DF8-0301-47B5-A4DA-DA22077A144B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F231DF8-0301-47B5-A4DA-DA22077A144B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F231DF8-0301-47B5-A4DA-DA22077A144B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E617C95-6B5D-4AAC-B7B2-E366074E22B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E617C95-6B5D-4AAC-B7B2-E366074E22B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E617C95-6B5D-4AAC-B7B2-E366074E22B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E617C95-6B5D-4AAC-B7B2-E366074E22B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{BBE7E8E7-C614-4553-8E50-396C50C296DD} = {847C0AED-45D2-4268-B751-40D118ED2434}
 		{FD13D32D-57F9-4D89-9ABC-9D1A37753B47} = {F1516BDC-554D-4972-97DC-F12147E42414}
 		{4F231DF8-0301-47B5-A4DA-DA22077A144B} = {9578D576-2B88-48E3-B3A7-B2CF153506F5}
+		{6E617C95-6B5D-4AAC-B7B2-E366074E22B5} = {F1516BDC-554D-4972-97DC-F12147E42414}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {93AEC827-7848-4A1E-9F44-3B383A3E7F13}
