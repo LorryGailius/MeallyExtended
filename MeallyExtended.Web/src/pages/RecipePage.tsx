@@ -241,9 +241,9 @@ const RecipePage: React.FC = () => {
           <div className="flex justify-between">
             <div className="mx-10">
               <div className="flex gap-24">
-                <div className="border-8 border-white shadow-lg w-[400px] h-[400px]">
-                  <div>
-                    {editMode && (
+                <div className="flex flex-col">
+                  {editMode && (
+                    <div className="h-8">
                       <Input
                         type="url"
                         defaultValue={recipe?.imageUrl}
@@ -257,13 +257,16 @@ const RecipePage: React.FC = () => {
                           });
                         }}
                       />
-                    )}
-                    <img
-                      src={recipe?.imageUrl ? recipe.imageUrl : placeholder}
-                      alt={recipe?.title}
-                      width={400}
-                      height={400}
-                    />
+                    </div>
+                  )}
+                  <div className="border-8 border-white shadow-lg w-[400px] h-[400px] overflow-hidden flex">
+                    <div>
+                      <img
+                        src={recipe?.imageUrl ? recipe.imageUrl : placeholder}
+                        alt={recipe?.title}
+                        className="shrink-0 min-w-full min-h-full"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div>

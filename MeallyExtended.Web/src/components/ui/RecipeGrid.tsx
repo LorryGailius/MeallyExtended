@@ -34,13 +34,11 @@ const RecipeGrid: React.FC<RecipeGridProps> = ({
         {recipes.map((recipe) => (
           <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
             <div className="flex flex-col items-center p-4">
-              <div
-              >
+              <div className="w-[200px] h-[200px] overflow-hidden flex">
                 <img
                   src={recipe.imageUrl || placeholder}
                   alt={recipe.title}
-                  width={200}
-                  height={200}  
+                  className="shrink-0 min-w-full min-h-full"
                 />
               </div>
               <p className="text-sm">{recipe.duration} minutes</p>
