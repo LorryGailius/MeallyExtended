@@ -51,6 +51,40 @@ namespace MeallyExtended.API.Controllers
             }
         }
 
+        [HttpPost("list")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [Authorize]
+        public async Task<IActionResult> CreateRecipeList([FromBody] List<CreateRecipeRequest> List)
+        {
+            if (List.Count == 0)
+            {
+                return BadRequest("Please fill in all fields");
+            }
+
+            var userEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var recipes = new List<RecipeDto>();
+            foreach (var request in List)
+            {
+                if (string.IsNullOrEmpty(request.Title) || string.IsNullOrEmpty(request.Description) ||
+                    request.Ingredients.Length == 0 || string.IsNullOrEmpty(request.Instructions))
+                {
+                    return BadRequest("Please fill in all fields");
+                }
+                var recipe = MeallyMapper.CreateRecipeRequestToRecipeDto(request, userEmail);
+                try
+                {
+                    var result = await _recipeService.AddRecipe(recipe);
+                    recipes.Add(MeallyMapper.RecipeToDto(result));
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            return CreatedAtAction("GetRecipe", recipes);
+        }
+
         /// <summary>
         /// Get a recipe by id
         /// </summary>
