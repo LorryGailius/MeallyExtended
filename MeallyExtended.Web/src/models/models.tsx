@@ -56,6 +56,7 @@ export enum Units {
   piece = 4,
   teaspoon = 5,
   tablespoon = 6,
+  toTase = 7,
 }
 
 export interface RecipeViewModel {

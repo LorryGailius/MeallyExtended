@@ -63,6 +63,7 @@ const CreateRecipePage: React.FC = () => {
           <CreateRecipeForm
             setIsLoggedIn={setIsLoggedIn}
             setUserInfo={setUserInfo}
+            setIsOpen={setOpen}
           />
         </DialogContent>
       </Dialog>

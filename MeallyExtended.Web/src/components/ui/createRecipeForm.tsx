@@ -37,6 +37,7 @@ import { Category, Units } from "@/models/models";
 interface CreateRecipeFormProps {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   setUserInfo: (userInfo: string) => void;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 type FormValues = {
@@ -120,8 +121,6 @@ const CreateRecipeForm: React.FC<CreateRecipeFormProps> = (props) => {
   console.log(categoriesList); // Check if categoriesList is updated
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log("Form sumittttttted", data);
-
     const categoryNames = data.categories.map((category) => category.category);
 
     axios
@@ -144,19 +143,17 @@ const CreateRecipeForm: React.FC<CreateRecipeFormProps> = (props) => {
         }
       )
       .then((response: AxiosResponse) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           toast({
-            title: "Successully created recipeĄ",
+            title: "Successully created recipe",
             description: "Sucessfully created recipe!",
             variant: "success",
           });
 
-          setOpen(false);
+          props.setIsOpen(false);
         }
       })
       .catch(() => {
-        console.log("Huine");
-
         setError("Failed to create recipe.");
       });
   });
@@ -345,7 +342,7 @@ const CreateRecipeForm: React.FC<CreateRecipeFormProps> = (props) => {
                           >
                             {unitOptions.map((unit) => (
                               <option key={unit.value} value={unit.value}>
-                                {unit.label}
+                                {unit.value !== 7 ? unit.label : "to taste"}
                               </option>
                             ))}
                           </select>
