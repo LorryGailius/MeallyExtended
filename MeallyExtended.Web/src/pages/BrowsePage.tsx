@@ -8,7 +8,7 @@ import { RecipeViewModel } from "@/models/models";
 const BrowsePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 25;
+  const pageSize = 10;
   const {
     searchRecipes,
     loading: searchLoading,

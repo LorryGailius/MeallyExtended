@@ -27,6 +27,11 @@ function LikeRecipeComponent() {
         withCredentials: true,
       })
       .then((response: AxiosResponse<RecipeViewModel[]>) => {
+        if (response.status === 204) {
+          setRecipes([]);
+          setLoading(false);
+          return;
+        }
         setRecipes(response.data.data);
         setLoading(false);
       })

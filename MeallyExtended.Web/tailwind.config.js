@@ -1,5 +1,3 @@
-const { background } = require("@chakra-ui/react");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],

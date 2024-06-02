@@ -212,7 +212,11 @@ const RecipePage: React.FC = () => {
 
               {userInfo !== recipe?.userEmail && (
                 <Button className="bg-transparent" onClick={LikeRecipe}>
-                  {recipe?.isFavorite && isLoggedIn ? <Heart fill="white" /> : <Heart />}
+                  {recipe?.isFavorite && isLoggedIn ? (
+                    <Heart fill="white" />
+                  ) : (
+                    <Heart />
+                  )}
                 </Button>
               )}
 
@@ -224,16 +228,10 @@ const RecipePage: React.FC = () => {
 
               {isLoggedIn && editMode && (
                 <div className="flex gap-4">
-                  <Button
-                    onClick={cancelEdit}
-                    variant="link"
-                  >
+                  <Button onClick={cancelEdit} variant="link">
                     Cancel
                   </Button>
-                  <Button
-                    onClick={saveEdit}
-                    variant="secondary"
-                  >
+                  <Button onClick={saveEdit} variant="secondary">
                     Save
                   </Button>
                 </div>
@@ -274,11 +272,12 @@ const RecipePage: React.FC = () => {
                     {recipe?.ingredients.map((ingredient: Ingredient) => (
                       <div className="flex gap-4">
                         <li key={ingredient.name}>
-                          {ingredient.quantity}{" "}
-                          {ingredient.unit != 4
+                          {ingredient.unit <= 6 ? ingredient.quantity : ""}{" "}
+                          {ingredient.unit != 4 && ingredient.unit <= 6
                             ? Units[ingredient.unit].toString()
                             : null}{" "}
                           {ingredient.name}
+                          {ingredient.unit > 6 && " to taste"}
                         </li>
                       </div>
                     ))}
