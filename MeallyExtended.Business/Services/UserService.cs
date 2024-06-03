@@ -1,5 +1,6 @@
 ﻿using MeallyExtended.Business.Interfaces;
 using MeallyExtended.Business.Mappers;
+using MeallyExtended.Business.Operations;
 using MeallyExtended.Business.Repository.Interfaces;
 using MeallyExtended.Contracts.Dto;
 using MeallyExtended.DataModels.Entities;
@@ -31,6 +32,7 @@ namespace MeallyExtended.Business.Services
             await _userRepository.RemoveFavoriteRecipe(userEmail, recipe);
         }
 
+        [Log]
         public async Task<PaginationResult<RecipeDto>> GetFavoriteRecipes(string userEmail, int pageNo, int pageSize)
         {
             return await GetPaginationResult(_userRepository.GetFavoriteRecipes(userEmail), pageNo, pageSize);
