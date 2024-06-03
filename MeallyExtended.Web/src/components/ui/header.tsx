@@ -13,6 +13,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import CreateRecipeForm from "@/components/ui/createRecipeForm";
+
 import { HamIcon, Menu } from "lucide-react";
 
 interface HeaderProps {
@@ -24,6 +33,7 @@ const Header: React.FC<HeaderProps> = (props) => {
   const nav: NavigateFunction = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     checkLoggedIn();
@@ -90,9 +100,21 @@ const Header: React.FC<HeaderProps> = (props) => {
       <div className="flex gap-2">
         {isLoggedIn ? (
           <>
-            <Button onClick={() => nav("/create-recipe")}>
-              Create New Recipe
-            </Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button>Create New Recipe</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create New Recipe</DialogTitle>
+                </DialogHeader>
+                <CreateRecipeForm
+                  setIsLoggedIn={setIsLoggedIn}
+                  setUserInfo={setUserInfo}
+                  setIsOpen={setOpen}
+                />
+              </DialogContent>
+            </Dialog>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Button variant="secondary">
